@@ -499,7 +499,7 @@ docker-compose 는 한 번 빌드된 이미지를 caching 하기 때문에 다�
 
 중요 waypoint
 
-1.  ec2 instance 에 nginx/node/mongodb 설정하기
+1. ec2 instance 에 nginx/node/mongodb 설정하기
 
 먼저 sudo apt-get update && sudo apt-get upgrade -y 명령어를 통해 ubuntu 를 최신버전으로 업그레이드.
 
@@ -654,24 +654,24 @@ sudo systemctl reload nginx
 
 ### 도메인 연결하기
 
-도메인을 연결하기 전에 먼저 ec2 인스턴스에 필요한 eleastic IP를 연결해놓고, 그 IP 주소를 등록하도록 하자.
+도메인을 연결하기 전에 먼저 ec2 인스턴스에 필요한 eleastic IP 를 연결해놓고, 그 IP 주소를 등록하도록 하자.
 
-이번에는 무료 도메인 연결을 시도했다. 도메인 구입은 [freenom](http://www.freenom.com/en/index.html?lang=en)에서 했고, 도메인 관리는 하단의 ```my domains```를 눌러 들어가면 된다.
+이번에는 무료 도메인 연결을 시도했다. 도메인 구입은 [freenom](http://www.freenom.com/en/index.html?lang=en)에서 했고, 도메인 관리는 하단의 `my domains`를 눌러 들어가면 된다.
 
 ![freenom](./images/today-i-learned/freenom.png)
 
-그 다음엔 해당되는 도메인의 ```manage domain```메뉴를 누른다.
+그 다음엔 해당되는 도메인의 `manage domain`메뉴를 누른다.
 
 ![freenom](./images/today-i-learned/freenom2.png)
 
-상단의 네 개 메뉴 중 Manage Freenom DNS를 누른다.
+상단의 네 개 메뉴 중 Manage Freenom DNS 를 누른다.
 
 ![freenom](./images/today-i-learned/freenom3.png)
 
-아래에 보면 name/target을 입력할 수 있는데,
+아래에 보면 name/target 을 입력할 수 있는데,
 
-name에는 도메인이름 ex) allhumor.ga / www.allhumor.ga
-target에는 IP 주소 ex) 52.78.233.72
+name 에는 도메인이름 ex) allhumor.ga / www.allhumor.ga
+target 에는 IP 주소 ex) 52.78.233.72
 
 ![freenom](./images/today-i-learned/freenom4.png)
 
@@ -693,7 +693,7 @@ target에는 IP 주소 ex) 52.78.233.72
   yarn add --dev jest-cli@20.0.4 enzyme enzyme-to-json
 ```
 
-snapshotSerializers 옵션은 jest snapshot을 찍을 경우 간략하게 dom 정보만 보여주도록 바꿈.
+snapshotSerializers 옵션은 jest snapshot 을 찍을 경우 간략하게 dom 정보만 보여주도록 바꿈.
 
 collectCoverageFrom 옵션은 테스트 커버리지 검사 시 포함/미포함 항목을 설정함.
 
@@ -712,13 +712,13 @@ collectCoverageFrom 옵션은 테스트 커버리지 검사 시 포함/미포함
   }
 ```
 
-마지막으로 src 폴더에 setupTest.js를 추가해주자.
+마지막으로 src 폴더에 setupTest.js 를 추가해주자.
 
 ```js
-  import { configure } from 'enzyme'
-  import Adapter from 'enzyme-adapter-react-16'
+import { configure } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 
-  configure({ adapter: new Adapter(), disableLifecycleMethods: true })
+configure({ adapter: new Adapter(), disableLifecycleMethods: true })
 ```
 
 ```bash
@@ -735,36 +735,36 @@ collectCoverageFrom 옵션은 테스트 커버리지 검사 시 포함/미포함
 기본적인 use case
 
 ```js
-  import React from 'react'
-  import { shallow } from 'enzyme'
+import React from 'react'
+import { shallow } from 'enzyme'
 
-  const props = { headerText: 'hi' }
-  const app = shallow(<App {...props} />)
+const props = { headerText: 'hi' }
+const app = shallow(<App {...props} />)
 
-  describe('App', () => {
-    // 스냅샷 테스트
-    it('renders properly', () => {
-      expect(app).toMatchSnapshot()
+describe('App', () => {
+  // 스냅샷 테스트
+  it('renders properly', () => {
+    expect(app).toMatchSnapshot()
+  })
+
+  describe('when clicked', () => {
+    // 동작을 simulate
+    beforeEach(() => {
+      app.find('button').simulate('click')
     })
 
-    describe('when clicked', () => {
-      // 동작을 simulate
-      beforeEach(() => {
-        app.find('button').simulate('click')
-      })
+    it('renders text', () => {
+      expect(app.find('h1').text()).toEqual('sample text')
+    })
 
-      it('renders text', () => {
-        expect(app.find('h1').text()).toEqual('sample text')
-      })
-
-      it('creates empty input field', () => {
-        // Input -> React.Element.
-        // 만약 connected component 라면?
-        // Connect(App) 이런 식으로 검사
-        expect(app.find('Input').exists()).toBe(true)
-      })
+    it('creates empty input field', () => {
+      // Input -> React.Element.
+      // 만약 connected component 라면?
+      // Connect(App) 이런 식으로 검사
+      expect(app.find('Input').exists()).toBe(true)
     })
   })
+})
 ```
 
 ### docker 명령어 / 플래그 해설
@@ -787,11 +787,11 @@ collectCoverageFrom 옵션은 테스트 커버리지 검사 시 포함/미포함
 
 ### Redis use cases
 
-Redis는 API 기반의 마이크로서비스를 사용할 경우 거의 필수적으로 사용된다.
+Redis 는 API 기반의 마이크로서비스를 사용할 경우 거의 필수적으로 사용된다.
 
-그 이유는 redis가 in-memory 기반의 데이터저장소 이기 때문에 굉장히 빠른 반응속도를 보여주기 때문이다.
+그 이유는 redis 가 in-memory 기반의 데이터저장소 이기 때문에 굉장히 빠른 반응속도를 보여주기 때문이다.
 
-Redis의 다양한 use case는 아래 블로그의 글처럼 정리된다.
+Redis 의 다양한 use case 는 아래 블로그의 글처럼 정리된다.
 
 [참고](https://www.objectrocket.com/blog/how-to/top-5-redis-use-cases)
 
@@ -803,28 +803,28 @@ Redis의 다양한 use case는 아래 블로그의 글처럼 정리된다.
   5. pub/sub
 ```
 
-그 중에서도 application의 caching layer로써 사용될 수 있는데, 이 경우 직접 api를 호출하는 것보다 탁월한 반응속도를 보여준다.
+그 중에서도 application 의 caching layer 로써 사용될 수 있는데, 이 경우 직접 api 를 호출하는 것보다 탁월한 반응속도를 보여준다.
 
-[Redis로 caching layer만들기 example](https://coligo.io/nodejs-api-redis-cache/)
+[Redis 로 caching layer 만들기 example](https://coligo.io/nodejs-api-redis-cache/)
 
-차이가 적게는 3배에서 많게는 10배까지 난다. API caching은 필수적인듯.
+차이가 적게는 3 배에서 많게는 10 배까지 난다. API caching 은 필수적인듯.
 
-### Redis - docker compose에서 설정하기
+### Redis - docker compose 에서 설정하기
 
 [참고](https://stackoverflow.com/questions/41427756/error-redis-connection-to-127-0-0-16379-failed-connect-econnrefused-127-0-0/41428342#41428342)
 
-기본적으로 redis는 redis-server 서비스를 호출함으로써 이용할 수 있다. 이 경우 호스트는 당연히 로컬호스트(127.0.0.1), 포트는 기본 포트인 6379에 연결된다.
+기본적으로 redis 는 redis-server 서비스를 호출함으로써 이용할 수 있다. 이 경우 호스트는 당연히 로컬호스트(127.0.0.1), 포트는 기본 포트인 6379 에 연결된다.
 
 그러나 도커는 컨테이너 환경이다. 그러므로 호스트가 달라진다.
 
-그래서 만약 redis.conf 설정으로 호스트나 엔트리포인트를 설정하지 않은 경우 또는 network 설정을 통해 redis 와 앱을 묶어주지 않은 경우 ```connection ERROR 127.0.0.1``` 을 볼 수 있다.
+그래서 만약 redis.conf 설정으로 호스트나 엔트리포인트를 설정하지 않은 경우 또는 network 설정을 통해 redis 와 앱을 묶어주지 않은 경우 `connection ERROR 127.0.0.1` 을 볼 수 있다.
 
 도커 컨테이너는 로컬호스트가 아니다라는 개념이 중요하다.
 
 추가)
-  docker-compose 2.x 버전 이후로 links는 deprecated 되었으며 network를 통해 연결하는 방법이 더 타당하다.
+docker-compose 2.x 버전 이후로 links 는 deprecated 되었으며 network 를 통해 연결하는 방법이 더 타당하다.
 
-  network 설정 예시)
+network 설정 예시)
 
 ```yaml
 version: "3.5"
@@ -877,26 +877,721 @@ networks:
 모두 같은 backend 네트워크로 연결되어 있으며, 직접 서비스를 연결할 때는(mongo 디비 연결이나 redis 클라이언트 연결) 서비스의 이름(mongodb/redis)이나 별칭(컨테이너 명)을 호스트 명으로 넘겨줘야한다.
 
 ex)
-  ```text
-    mongodb://HOST:27017/dbname
-    이 경우 HOST는 서비스 명인 mongodb거나
-    컨테이너명이 정해져있는 경우 컨테이너 명인 mongo임
-  ```
 
+```text
+  mongodb://HOST:27017/dbname
+  이 경우 HOST는 서비스 명인 mongodb거나
+  컨테이너명이 정해져있는 경우 컨테이너 명인 mongo임
+```
 
 ### docker compose volume
 
 볼륨은 방대한 파일을 어떤 식으로 처리할까라는 고민에 대한 답을 담고 있다. 일반적으로 도커 컨테이너는 일회성이기 때문에 컨터이너 간에 파일을 공유한다거나 하는 일은 불가능하다.
 
-그러나 적절히 volume 설정을 해준다면 호스트 컴퓨터의 path에 파일을 저장시켜놓고 컨테이너 간에 공유를 할 수 있다.
+그러나 적절히 volume 설정을 해준다면 호스트 컴퓨터의 path 에 파일을 저장시켜놓고 컨테이너 간에 공유를 할 수 있다.
 
 이는 쉽게 생각하면 창고 개념으로 볼 수 있다. 창고에 자료를 넣어두면 아무나 가져가서 볼 수 있듯이 도커도 볼륨을 설정해두면 볼륨에 해당하는 파일은 컨테이너 간에 공유도 가능하고, 호스트 컴퓨터의 공간에 저장된다.
 
 ### docker image 용량 줄이기
 
-기본적으로 docker image들은 용량이 제법 큰 편이다.
+기본적으로 docker image 들은 용량이 제법 큰 편이다.
 
 최소 300 ~ 600mb 쯤 나가는 이미지들이 대다수다.
 
-그러나 alpine 버전을 사용하면 1/3 ~ 1/5의 용량으로도 해당 이미지를 사용할 수 있다.
+그러나 alpine 버전을 사용하면 1/3 ~ 1/5 의 용량으로도 해당 이미지를 사용할 수 있다.
 
+## 2018. 03. 10. 토
+
+### mongodb replica set 설정하기
+
+먼저 docker-compose.yml 파일에 두 개의 secondary mongod 인스턴스를 추가해준다. 이 때 컨테이너 포트는 다르게 바인딩 해준다. (27017:27017, 27018:27017)
+
+다음으로 `docker exec -it mongo<컨테이너명> mongo` 명령어를 통해 primary mongod 인스턴스의 mongo shell 에 접속한다.
+
+이제 replica set 을 생성하자.
+
+```js
+// 시작
+rs.initiate()
+
+// secondary instance 추가
+rs.add('<hostname or container name>:<port>')
+
+// 상태 확인
+rs.status()
+```
+
+만약 상태를 확인했을 때 host 명이 localhost 로 되어있다면 적절한 컨테이너 명으로 바꿔줘야한다.
+
+```bash
+cfg = rs.conf()
+cfg.members[1].host = "mongodb1.example.net:27017"
+rs.reconfig(cfg)
+```
+
+이제 각 인스턴스의 커맨드는
+
+```bash
+mongod --smallfiles --replSet <SET이름>
+```
+
+이 되어야한다.
+
+다음 단계는 keyfile 을 이용해서 access control 을 해야한다.
+
+먼저 keyfile 을 생성해주자.
+
+```bash
+openssl rand -base64 756 > <path-to-keyfile>
+chmod 400 <path-to-keyfile>
+```
+
+다음으로 각 인스턴스의 볼륨 옵션에 이 키파일을 추가해주자.
+
+```yml
+secondary:
+  container_name: secondary
+  image: mvertes/alpine-mongo
+  ports:
+    - "27018:27017"
+  volumes:
+    - mongo1:/data/db
+    # 이런 식으로 keyfile을 넘겨준다.
+    - ./keyfile:/opts/mongors/keyfile
+  # keyfile 옵션을 추가
+  command: mongod --smallfiles --replSet test --keyFile /opts/mongors/keyfile --auth
+  networks:
+    - backend
+```
+
+이제 primary 에 localhost(no auth 상태)로 mongo shell 에 접속한다.
+
+다음으로 admin 유저를 생성한다.
+
+```js
+admin = db.getSiblingDB('admin')
+admin.createUser({
+  user: 'fred',
+  pwd: 'changeme1',
+  roles: [{ role: 'userAdminAnyDatabase', db: 'admin' }],
+})
+```
+
+이제 몽고쉘에 들어가 인증하려면
+
+```js
+db.getSiblingDB('admin').auth('fred', 'changeme1')
+```
+
+끝!
+
+### non primary instance 에서 query 하기(not master 에러)
+
+replset 에서 PRIMARY 가 아닌 다른 mongod 인스턴스에서 query 를 시도하면 다음과 같은 에러가 발생한다.
+
+```bash
+test:SECONDARY> db.users.find()
+Error: error: {
+        "operationTime" : Timestamp(1520689840, 1),
+        "ok" : 0,
+        "errmsg" : "not master and slaveOk=false",
+        "code" : 13435,
+        "codeName" : "NotMasterNoSlaveOk",
+        "$clusterTime" : {
+                "clusterTime" : Timestamp(1520689840, 1),
+                "signature" : {
+                        "hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        "keyId" : NumberLong(0)
+                }
+        }
+}
+```
+
+이 경우
+
+```bash
+rs.slaveOk() 를 통해서 slave에서 query를 할 수 있다.
+
+혹은 PRIMARY instance의 hostaname을 알아보려면
+
+rs.status() 를 실행한다.
+
+그리고 terminal에서
+
+docker exec -it container_name mongo --host container_name을 시도
+```
+
+## 2018. 03. 12. 월
+
+### Elasticsearch: "No living connections" 에러 해결
+
+docker 환경에서 elasticsearch 를 사용하기 위해 아래와 같이 설정을 세팅했다.
+
+```yml
+version: "3.5"
+services:
+  server1:
+    container_name: server1
+    build: .
+    ports:
+      - "3001:3030"
+    environment:
+      ...
+      - ES_HOST=elasticsearch
+    volumes:
+      - ./:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    networks:
+      - backend
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.2
+    volumes:
+      - esdata:/usr/elasticsearch/data
+    environment:
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - discovery.type=single-node
+    ports:
+      - "9300:9300"
+      - "9200:9200"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  esdata:
+```
+
+그러나 지속적으로 elasticsearch 에서는 No living connection 에러만이 발생했다.
+
+그래서 깃헙 등을 돌아다니며 몇 가지 솔루션을 제안받았지만 실패했다.
+
+그러다 로컬에서 다운받고 실행을 시키니 정상적으로 작동하는 것이었다.
+
+connection 이 성립하지 못하는 것은 host 나 port 와 관련이 있을 것같아서
+
+```bash
+docker inspect <container_name>
+```
+
+아래 명령어를 입력하니
+
+```json
+[
+    {
+        "Id": "62a0886daf9965fc59c592c8c5892405a1ac1216a86bf00babaae9761020f816",
+        "Created": "2018-03-11T15:01:40.471293562Z",
+        "Path": "/usr/local/bin/docker-entrypoint.sh",
+        "Args": [
+            "eswrapper"
+        ],
+        ...
+            "Networks": {
+                "dockercomposeexample_default": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "elasticsearch",
+                        "62a0886daf99"
+                    ],
+                    "NetworkID": "4b88c92cdd8ba431fb81e0e6d1953dc0200770c0372f0b72d27ad0a03c2ec300",
+                    "EndpointID": "102654655a687c055494120323e131a45796505347beb569ef0178233ac54099",
+                    "Gateway": "172.24.0.1", #gateway
+                    "IPAddress": "172.24.0.2", #privateIP
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "MacAddress": "02:42:ac:18:00:02",
+                    "DriverOpts": null
+                }
+            }
+        }
+    }
+]
+```
+
+Network 항목에서 Gateway 와 IPAddress 항목이 보였다.
+
+나는 IPAddress 를 host 로 설정했다. 그러나 마찬가지로 작동하지 않았다.
+
+그래서 host 값을 172.24.0.1 즉 gateway 의 IP 로 바꾸었더니 잘 작동했다.
+
+docker container 나 daemon 이 어떤 식으로 작동하는지 파악할 필요가 있을 것 같다.
+
+[stackoverflow 질문](https://stackoverflow.com/questions/38467036/no-living-connections-error-while-elasticsearch-connections-in-nodejs/49229143#49229143)
+
+## 2018. 03. 17 토
+
+### 맥용 엑셀 .csv 한글 깨짐 현상
+
+맥용 엑셀에서 한글 파일을 열 경우 일본어로 깨져보이는 경우가 있다.
+
+이는 기본 인코딩이 utf-8 이 아니기 때문이며, 이 경우 엑셀 상단의 [데이터]-[텍스트에서]
+
+를 선택하고, Mac(한글) 옵션을 선택하면 미리보기에서 정상적으로 출력된다.
+
+그러나 이는 문서를 읽을 때에만 해당되는 것으로, 만약 그 상태에서 다시 .csv 확장자로 문서를 저장할 경우 모든 non-ascii 글자가 \_(underscore)로 표시된다.
+
+이 때 해결 방법은 파일을 UTF-16 유니코드 텍스트로 저장한 뒤 확장자를 .csv 로 다시 바꿔주는 방법이다. 이렇게 하면 파일을 읽을 때, 쓸 때 모두 안전하게 non-ascii 글자를 사용할 수 있다.
+
+## 2018. 03. 18 일
+
+### �(question mark inside black cube/diamond)
+
+위 글자가 발생하는 이유는 어떤 글자를 UTF-8 로 인코딩하려다가 실패할 경우 강제로 저 글자로 대체하기 때문에 생겨난다.
+
+[참고](https://discuss.elastic.co/t/logstash-invalid-character-for-utf-16-unicode-encoding/56702/5)
+
+```text
+// 답변 원문
+The question-mark-in-black-diamond character is a replacement character that is used when the UTF16 -> UTF8 character conversion fails.
+
+This piece of config codec => plain { charset => "UTF-16" } says to Logstash "Treat all text as UTF16 and convert it to UTF8"
+
+There may be some illegal surrogates http://unicode.org/faq/utf_bom.html#utf16-716
+or maybe the charset conversion library we use does not deal with noncharacters http://www.unicode.org/faq/private_use.html#noncharacters15 very well.
+```
+
+## 2018. 03. 19. 월
+
+### logstash에 저장한 파일이 logging되지 않아요 ㅜ
+
+logstash는 event를 통해 읽어들인다. 이 말은 파일이 변경되거나 혹은 처음 logstash에 저장되는 것이 아닌 이상 새로 읽어들이지 않는다는 것이다. 그러므로 파일이름을 바꾸거나 아니면 파일을 새로 수정해야 다시 읽어들인다. 또한 logstash는 한 번 실행되고 종료되지 않는다. 지속적으로 실행된 상태를 유지한다.
+
+### Logstash csv 파일 다루기
+
+맥/윈도우 액셀 모두 csv 파일을 기본적으로 저장할 경우, \_\_\_ 와 같이 언더스코어만 계속 보이거나 한자/일본어만 계속해서 보이는 상황이 일어난다.
+
+이는 인코딩 문제의 영향으로 다른이름으로 저장 - UTF-16 텍스트로 저장을 통해 언더스코어로 저장되는 일을 방지할 수 있다.
+
+그러나 logstash 의 codec 을 UTF-16 으로 지정하더라도 \\u000 와 같은 텍스트가 뜨는 에러가 발생한다.
+
+또 다른 codec 의 인코딩을 다른 것으로 지정하더라도 � 와 같이 utf-8 변환이 실패했을 때 나오는 텍스트가 나오기 때문에 찾아낸 유일한 방법은
+
+```text
+1. 엑셀 위쪽 탭에서 [데이터]-[텍스트에서 가져오기]
+2. utf-16 텍스트로 저장하기
+3. 윈도우에서 엑셀 파일을 한 번 연다.(이 때 저장을 통해 cp949 인코딩으로 저장된다.)
+4. 윈도우 노트패드를 통해 연다. (이때 인코딩은 ANSI)로 지정.
+5. utf-8 형식으로 저장한다.
+```
+
+3 단계에서 엑셀 파일을 굳이 열어서 한 번 더 저장해주는 이유는 utf-16 텍스트로 저장한 파일을 노트패드로 열어서(이 때는 인코딩을 유니코드로 지정해야 열림) 저장할 경우 기껏 지정해놓은 delimeter(구분자)가 사라져 한 칼럼에 모든 데이터가 들어가게 되기 때문에 logstash 에서 seperator 를 지정할 수 가 없기 때문이다.
+
+3 단계를 하고 나면 노트패드를 통해 열었을 때 ,(delimeter)가 살아있게 되어 utf-8 형식으로 바꾸더라도 제대로 칼럼이 나눠져 있다.
+
+만약 위의 절차를 하나라도 어길 시 logstash 를 통해서 한글 데이터를 저장할 수 없다.
+
+```conf
+input {
+  file {
+    # path는 절대 경로를 사용하기 않으면 에러가 발생함.
+    path => "/Users/leejunhyung/Downloads/auft.csv"
+    start_position => "beginning" # 파일을 처음부터 읽어들인다.
+    sincedb_path => "/dev/null"
+  }
+}
+
+filter {
+  csv {
+    separator => "," # 기본 seperator
+    columns => ["id", "name", "branch", "old_address", "new_address", "latitude", "longitude"]
+  }
+  mutate { 
+    # elasticsearch에서 location은 geo_point타입이다.
+    # 그리고 아래와 같이 먼저 latitude, longitude 칼럼을 float 타입으로 바꿔주고
+    # 그 다음에 아래와 같이 location 아래에 위치시킨다.
+    convert => { "latitude" => "float" }
+    convert => { "longitude" => "float" }
+    rename => [
+      "latitude", 
+      "[location][lat]", 
+      "longitude", 
+      "[location][lon]"
+    ]
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => ["http://localhost:9200"]
+    index => "csv" # 미리 index가 생성되어 있어야 도큐먼트가 저장됨.
+  }
+  stdout {
+    codec => rubydebug # 데이터를 json 형태의 읽기 좋은 형태로 보여줌.
+  }
+}
+```
+
+## 3028. 03. 20. 화
+
+### Node.js 버전 충돌 문제 해결
+
+Node.js를 사용하다보면 자연스럽게 여러 버전의 node.js를 다운로드 받게 됩니다.
+
+때로는 공식 홈페이지에서 다운로드 받을 수도 있고, 맥 유저라면 homebrew를 통해 다운로드 받을 수도 있죠.
+
+이런 상황이 지속되다보면 node --version 명령어를 쳤을 때 이전 버전이 출력되는 일이 일어나기도 합니다.
+
+이는 여러군데서 node.js를 다운로드 받았기 때문에 발생하는 문제인데, 다음과 같이 해결할 수 있습니다.
+
+1. Node.js 공식 홈페이지에서 다운로드 받은 경우(http://nodejs.org)
+
+이 경우 명령어 한 방으로 정리 가능
+
+```bash
+rm -fr /usr/local/bin/{node,npm} /usr/local/lib/node_modules/
+```
+
+[참조](https://github.com/nodejs/node-v0.x-archive/issues/4058)
+
+2. Homebrew를 통해 다운로드 받은 경우
+
+먼저 ```brew list```를 통해 node.js를 다운로드 받았는지부터 확인하자
+
+만약 node.js가 확인된다면 ```brew uninstall node --force```을 통해 지워주세요.
+
+--force를 붙여야만 여러 버전의 node.js를 지울 수 있습니다.
+
+Node.js는 보통 여러 경로를 통해서 다운로드 받을 수 있기 때문에 이처럼 버전 충돌 문제가 꽤 자주 발생합니다. 그러므로 한 경로를 통해서만 Node.js를 다운로드 받는 것이 좋습니다.
+
+그리고 많은 경우 가장 추천드리는 방법은 nvm을 이용하는 것입니다.
+nvm은 Node Version Manager의 약자로 node.js의 버전 관리를 도와주는 bash script입니다.
+
+[링크](https://github.com/creationix/nvm)
+
+사용법은 아래와 같습니다. (출처: nvm 공식문서)
+
+```bash
+# 설치(curl 혹은 wget을 이용)
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+
+# nvm 명령어 불러오기
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+만약 nvm 명령어를 정상적으로 불러올 수 없다면 직접 .bashrc를 켜서 위와 같이 추가해줍니다.
+
+open ~/.bashrc # .bashrc 열기
+
+위의 내용을 추가했다면 source ~/.bashrc를 통해 내용을 불러옵니다.
+
+# node.js 설치
+nvm install node # 최신버전 설치
+nvm use node # 최신버전 사용
+
+혹은
+
+nvm install --lts # LTS(장기 지원) 버전 다운로드
+nvm install 9.8.0 # 특정 버전 사용
+```
+
+마무리:
+
+nvm 자체 버전 업데이트
+
+```bash
+set -e
+
+cd ~/.nvm
+
+git fetch --tags
+TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+echo "Checking out tag $TAG..."
+git checkout "$TAG"
+
+source ~/.nvm/nvm.sh
+```
+
+[참조](https://github.com/creationix/nvm/issues/400)
+
+이제 즐거운 node.js 라이프를 즐겨봅시다!
+
+### 생활코딩 리눅스 강의 중 왜 CLI 인가'?'
+
+linux에서는 각 프로세스의 출력을 다른 프로세스의 입력으로 전환할 수 있다.
+
+예를 들면 파일의 내용을 보여주는 cat 명령어와 특정 단어가 포함된 열을 보여주는 grep 명령어를 조합하면
+
+```bash
+# 특정 파일에서 keyword가 들어간 행만 찾을 수 있음
+cat [directory] | grep [keyword] | other_commands
+```
+
+### 생활코딩 리눅스 강의 중 IO Redirection
+
+리눅스 환경에서는 명령어 프로세스를 통해서 출력된 결과를 수동으로 ctrl c + ctrl v 하지 않더라도 파일로 볼 수 있다.
+
+예시:
+
+```bash
+# 이 명령어는 앞선 명령어의 결과, 즉 sometext.txt를 복사해서 copy.txt 파일을 출력할 것이다.
+cat sometext.txt > copy.txt
+```
+
+이러한 IO Redirection은 stdinput/stdoutput/stderror를 대상으로 한다.
+
+즉, 어떤 프로세스의 에러 출력도 리다이렉션이 가능한 것이다.
+
+예를 들면
+
+```bash
+rm notexists.txt
+# no such file: notexists error!
+
+rm notexists.txt 2> error.log
+# 이제 error.log에 에러가 저장됩니다.
+
+rm notexists.txt 1> result.txt 2> error.log
+# 이런 식으로 결과가 있다면 result.txt에,
+# 에러가 발생하면 error.log에 저장하는 것도 가능합니다.
+```
+
++추가
+
+만약 >> 로 리다이렉션을 하면 기본적인 행동방식이 overwrite에서 append로 바뀐다. 즉 기존 아웃풋을 덮어쓰지 않고 추가만 한다.
+
+```bash
+nano hello.txt # hello
+
+# 결과를 덮어씀
+cat hello.txt > manyhellos.txt # hello
+cat hello.txt > manyhellos.txt # hello
+
+# 이미 존재하는 결과에 덧붙임
+cat hello.txt >> manyhellos.txt # hello
+cat hello.txt >> manyhellos.txt # hello hello
+```
+
+번외) /dev/null => unix 계열 os의 휴지통 개념
+
+## 2018. 03. 22 목
+
+### 유저 디렉토리로 한 방에 이동
+
+유닉스 계열의 운영체제는 일반적으로 /home 디렉토리 아래에 유저명의 디렉토리를 가진다.
+
+ex) /home/user1
+
+이 때 유저명의 디렉토리로 한 방에 이동하려면 위의 경로를 치는 것 대신 ```cd ~```을 치면 한 방에 이동할 수 있다.
+
+## 2018. 03. 23 금
+
+### http/2, spdy
+
+http/1.1보다 속도 면에서 많은 성과를 이뤄냄.
+
+주요한 특징으로는 multiplexed stream, stream prioritization, server push, header compression 등이 있으며, 성능면에서 많은 개선이 이뤄짐.
+
+또 http/2는 https 기반에서만 작동하므로 암호화의 이점까지 가져감.
+
+spdy: http/2 이전에 구글이 개발한 개선 프로토콜
+
+### Node.js 보안 모듈들
+
+1. csurf
+
+[csrf 이해하기](https://github.com/pillarjs/understanding-csrf/pull/10/files?short_path=2c41220)
+
+CSRF 혹은 XSRF 공격을 방어하기 위한 수단으로 csrf 토큰을 사용할 수 있다. 이 경우 동작 방식은
+
+```text
+1. 서버가 클라이언트로 토큰을 전송합니다. (쿠키의 형태로 전달)
+2. 클라이언트가 폼을 토큰과 함께 제출합니다. (react app에서는 credential 옵션을 통해 헤더로 전달)
+3. 토큰이 올바르지 않으면 서버에서 요청을 거부합니다.
+```
+
+이 때 공격자가 토큰을 얻으려할 것이며, CORS를 허용하지 않음으로써 토큰 획득을 원천적으로 차단할 수 있습니다. 또 쿠키를 httpOnly로 설정하면 XSS(자바스크립트 조작)을 막을 수 있습니다.
+
+2. rate limiting
+
+DDOS(Distributed Denial Of Service): 분산 서비스 거부 공격은 보통 서버 컴퓨터에 막대한 연산을 초래하는 api 요청을 지속적으로 보내거나 혹은 단순히 많은 요청을 보내 서버의 응답 지연이나 응답 시간 초과를 유도하여 서비스를 마비시킨다. 이를 막으려면 어떤 ip에서 어느 정도의 요청을 보내는지를 기억해야하며, 이 경우 redis 등의 저장소를 통해 요청 횟수를 기록하고, 이 숫자를 상회할 경우 에러를 띄울 수 있다.
+
+3. safe-regex
+
+regex 중에는 막대한 연산을 필요로 하는 경우가 있다. 이 경우 DDOS 공격의 표적이 되기 쉬우며, 그렇기 때문에 안전한 regex만을 사용해야 한다. 이 때 "Safe regex"와 같은 모듈을 사용할 수 있다.
+
+[safe-regex](https://github.com/substack/safe-regex)
+
+4. helmet
+
+helmet은 express앱을 위한 보안장치이다. 기본적인 보안조치들이 갖춰져 있으며, 사용법도 간단해서 사용하기 좋다. 필수!
+
+5. user parameter validation
+
+유저가 입력한 값은 언제나 믿을 수 없는 값이다. 특히나 인풋 텍스트 같은 경우 SQL 인젝션이나 위험한 자바스크립트 공격이 언제든 시도될 수 있으므로 입력값을 검증하고 필요하다면 escape 시켜야한다. 또 가능한한 JSON 형태로 정보를 주고 받는 것이 좋다. 이 때 사용할 수 있는 것이 express-validator이다. 입력 검증 미들웨어 중에서는 가장 star가 많다.
+
+[express-validator](https://github.com/ctavan/express-validator)
+
+6. XSS
+
+XSS 방어는 주로 entity를 escape하는 것으로 이뤄진다. 또 다른 방법은 httpOnly cookie를 사용하는 것으로 이를 통해 공격자가 자바스크립트로 cookie를 제어할 수 없게 한다.
+
+### cookie/session 기반 인증
+
+http는 기본적으로 두 가지 특성이 있다. 첫 번째는 상태가 없다는 것이고(stateless), 두 번째는 연결이 일회성이라는 것이다.
+
+이 두 가지 특성 때문에 상태를 저장할 공간이 필요했는데, 일반적으로 현재는 쿠키와 세션이 사용되고 있다.
+
+유저가 성공적으로 로그인하면 그 정보를 담은 세션을 서버에 저장하고 브라우저에는 쿠키를 넘긴다. 성공적으로 로그인된 유저는 이후 요청을 보낼 때는 쿠키와 함께 요청을 보낸다. 만약 쿠키가 올바르다면 세션과 대조를 한 후 서버는 응답한다.
+
+vs. JWT
+
+jwt 방식은 쿠키/세션과 달리 서버쪽에 세션을 생성하지 않는다. 대신 유저의 로그인 정보 등을 토큰 안에 담아 직접 전달한다. 그러므로 쿠키/세션 방식에 비해 서버에 부담이 적다. 그러나 세션을 관리할 수 없으므로 토큰을 임의로 폐기할 방법이 없다.
+
+### nginx 서버 기본적인 proxy, load-balancing과 caching
+
+1. Proxy
+
+proxy 설정은 proxy_pass 옵션을 통해 설정한다.
+
+```conf
+server {
+  listen 80; # http 기본 포트
+  server_name localhost # 서버의 호스트명
+
+  location / {
+    # 이 경우 proxy_pass는 WAS(웹앱 서버의 주소를 적어준다.)
+    proxy_pass http://127.0.0.1:3001;
+  }
+}
+
+이 경우 모식도는
+
+유저 -> localhost:80 혹은 localhost로 접속 -> nginx 프록시 서버 -> WAS(node.js 애플리케이션 서버)
+```
+
+2. Load-balancing
+
+여러 서버 인스턴스 간에 부하를 조절할 수 있다. 
+
+가장 기본적인 방식은 round-robin(순차적으로 부하를 부담), least-conn(가장 부하가 적은 서버에 부하를 넘김), weight(부하의 정도를 설정)이 있다.
+
+```conf
+upstream react {
+  least_conn; # least_conn 방식
+  server 127.0.0.1:3001 weight=3; # weight 설정
+}
+server {
+  listen 80; # http 기본 포트
+  server_name localhost # 서버의 호스트명
+
+  location / {
+    # 이 경우 proxy_pass는 WAS(웹앱 서버의 주소를 적어준다.)
+    proxy_pass http://react;
+  }
+}
+```
+
+3. Caching
+
+웹앱의 성능에 가장 큰 영향을 미치는 요소는 캐싱이다.
+
+일반적으로 많이 변하지 않는 정적 자산에 대해 캐싱을 시도한다.
+
+캐싱을 위한 설정을 아래와 같다.
+
+```conf
+server {
+  listen 80; # http 기본 포트
+  server_name localhost # 서버의 호스트명
+
+  location / {
+    # 이 경우 proxy_pass는 WAS(웹앱 서버의 주소를 적어준다.)
+    proxy_pass http://react;
+  }
+
+  # ~*은 case-insensitive를 의미, 이런 식으로 regex도 활용가능하다.
+  location ~* \.(jpe?g)$ {
+    # 애플리케이션의 정적 자산이 들어있는 디렉토리
+    root /Users/leejunhyung/ssr/public/img;
+    expires 168h; # 만료기간
+  }
+}
+```
+
+### React SSR
+
+서버사이드 렌더링은 크게 두 가지 이점이 있다.
+
+1. SEO 향상
+서버측에서 html을 렌더링해서 넘겨주므로 크롤링 봇들이 내용을 바로 확인할 수 있다.
+
+2. 초기 로딩속도 개선
+클라이언트측에서 렌더링하는 대신 서버에서 넘겨주므로 초기 로딩속도가 빨라진다.
+
+3. 단점:
+서버의 부하가 증가한다.
+구조가 복잡해진다.
+
+구현
+
+React 16의 renderToNodeStream을 사용
+
+```js
+import express from 'express'
+import React from 'react'
+import { renderToNodeStream } from 'react-dom/server' // react 16
+import App from '../src/App'
+import { ServerStyleSheet } from 'styled-components'
+import { StaticRouter as Router } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import reducer from '../src/reducers'
+import serialize from 'serialize-javascript' // json 데이터 escape
+import path from 'path'
+
+const port = 3001
+const server = express()
+
+server.use(express.static(path.resolve(process.cwd(), 'public/img')))
+
+server.get('/', (req, res) => {
+  const store = createStore(reducer)
+  const preloadedState = store.getState() // 미리 상태를 불러옴
+
+  res.write(
+    `<!DOCTYPE html>
+      <html>
+        <meta charset="UTF-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <body>
+          <img src="/a.jpeg" />
+          <div id="root">
+          <script>
+            window.__PRELOADED_STATE__ = ${serialize(preloadedState)}
+          </script>
+    `,
+  )
+  const sheet = new ServerStyleSheet()
+  const body = sheet.collectStyles(
+    <Provider store={store}>
+      <Router context={{}} location={req.url}>
+        <App />
+      </Router>
+    </Provider>,
+  )
+  const stream = sheet.interleaveWithNodeStream(renderToNodeStream(body))
+
+  stream.pipe(res, { end: false })
+  stream.on('end', () => res.end('</div></body></html>')) // html을 닫아줌
+})
+
+server.listen(port)
+
+```
