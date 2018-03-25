@@ -1,4 +1,4 @@
-# Today I Learned ...
+# Today I Learned (2018-01-29 ~ 2018. 03. 24)
 
 ## 2018-01-29
 
@@ -1397,6 +1397,36 @@ http/1.1보다 속도 면에서 많은 성과를 이뤄냄.
 
 spdy: http/2 이전에 구글이 개발한 개선 프로토콜
 
+구현
+
+```js
+import fs from 'fs'
+import path from 'path'
+
+import express from 'express'
+import spdy from 'spdy'
+
+import db from './db'
+
+require('dotenv').config()
+
+const options = {
+  key: fs.readFileSync(path.resolve(process.cwd(), 'src/api.nodejs.com.key')),
+  cert: fs.readFileSync(path.resolve(process.cwd(), 'src/api.nodejs.com.crt')),
+  // 보안키(.pem) 생성 중 passphrase를 입력했다면 그 값을 넣어야함.
+  passphrase: '10rhrnak',
+}
+
+const port = process.env.PORT || 3030
+const app = express()
+
+db.connect()
+
+const server = spdy.createServer(options, app)
+
+server.listen(port)
+```
+
 ### Node.js 보안 모듈들
 
 1. csurf
@@ -1595,3 +1625,11 @@ server.get('/', (req, res) => {
 server.listen(port)
 
 ```
+
+## 2018. 03. 24. 토
+
+### html5 모바일 전용 기능들
+
+1. Media Capture
+
+사진 촬영, 비디오 촬영, 녹음 기능이 존재.
