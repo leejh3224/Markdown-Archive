@@ -721,6 +721,14 @@ import Adapter from 'enzyme-adapter-react-16'
 configure({ adapter: new Adapter(), disableLifecycleMethods: true })
 ```
 
+만약 typescript를 사용 중이라면 여기에다가 package.json의 jest 옵션에
+
+```json
+"setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.ts"
+```
+
+와 같이 추가해준다.
+
 ```bash
   // 테스트 커맨드
   yarn jest --watchAll
@@ -1633,3 +1641,429 @@ server.listen(port)
 1. Media Capture
 
 사진 촬영, 비디오 촬영, 녹음 기능이 존재.
+
+## 2018. 03. 25 일
+
+### Typescript / SSR
+
+* Typescript 와 React
+
+주의점: .ts 파일에서는 jsx 문법을 사용할 수 없다. 무조건 .tsx 인지 확인할 것!
+장점: 런타임에서 에러를 잡아줌 / IDE 의 자동 완성 기능을 최대치로 사용할 수 있음
+
+* SSR 적용하기
+
+typescript 와 server side rendering 을 적용하며 배운 것들을 기록.
+
+Server side rendering
+
+장점: 서버에서 html 을 미리 렌더링한 후 클라이언트에게 넘겨주므로 초기 로딩 시간이 짧아진다.
+그리고 SEO 를 향상시킨다. (미리 결과물을 렌더링해서 넘겨주므로)
+
+단점: 서버의 부하가 늘어난다, 프로젝트가 복잡해질 수 있다, 번들의 규모가 작으면 큰 이점이 없을 수 있다.
+
+commonjs/esnext
+
+적용방법:
+
+* create-react-app 의 typescript 버전을 다운로드 ([링크](https://github.com/wmonk/create-react-app-typescript))
+
+* 그 다음으로 express 서버를 만들어준다.
+
+```jsx
+import * as express from 'express'
+// 타입스크립트의 type definitions
+import { Application, Request, Response } from 'express'
+import * as React from 'react'
+// React 16의 기능
+import { renderToNodeStream } from 'react-dom/server'
+import { StaticRouter as Router } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+// styled-components의 ssr 유틸리티
+import { ServerStyleSheet, injectGlobal } from 'styled-components'
+import * as path from 'path'
+
+import reducer from 'store/reducers'
+import globalStyle from 'styles/global-style'
+
+import App from './App'
+import html from './html'
+
+const port = process.env.PORT || 3001
+const server: Application = express()
+
+server.use(express.static(path.resolve(process.cwd(), 'public/img')))
+
+server.get('/', (req: Request, res: Response) => {
+  const store = createStore(reducer)
+  // head의 script tag안에 들어감
+  const preloadedState = store.getState()
+  const sheet = new ServerStyleSheet()
+
+  /* tslint:disable:no-unused-expression */
+  injectGlobal`
+    ${globalStyle}
+  `
+
+  const body = sheet.collectStyles(
+    <Provider store={store}>
+      <Router context={{}} location={req.url}>
+        <App />
+      </Router>
+    </Provider>,
+  )
+
+  res.write(
+    html({
+      title: 'GPS NOREABANG FINDER',
+      state: preloadedState,
+    }),
+  )
+
+  const stream = sheet.interleaveWithNodeStream(renderToNodeStream(body))
+
+  stream.pipe(res, { end: false })
+  stream.on('end', () => res.end('</div></body></html>'))
+})
+
+server.listen(port)
+```
+
+* html 파일
+
+```jsx
+// JSON.stringify의 대안
+import * as serialize from 'serialize-javascript'
+
+export default ({ title, state }: { title: string, state: object }) => `
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>${title}</title>
+  <body>
+    <div id="root">
+    <script>
+      window.__PRELOADED_STATE__ = ${serialize(state)}
+    </script>
+`
+```
+
+* index.tsx
+
+```jsx
+import * as React from 'react'
+import { hydrate } from 'react-dom'
+import { consolidateStreamedStyles } from 'styled-components'
+import { Provider } from 'react-redux'
+import configureStore from 'store/configureStore'
+
+import App from './App'
+import registerServiceWorker from './registerServiceWorker'
+
+// as any => 강제 타입 캐스팅
+const preloadedState = (window as any).__PRELOADED_STATE__
+
+delete (window as any).__PRELOADED_STATE__
+
+const store = configureStore(preloadedState)
+
+consolidateStreamedStyles()
+
+hydrate(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root') as HTMLElement,
+)
+registerServiceWorker()
+```
+
+* 시작하기(with nodemon)
+
+```bash
+NODE_PATH=src nodemon src/server.tsx --exec ts-node --watch src
+```
+
+** 먼저 ts-node 를 다운로드 (yarn add --dev ts-node)
+** tsconfig.json 을 수정
+
+```json
+{
+  "compilerOptions": {
+    "outDir": "build/dist",
+    "module": "commonjs", // 기본 설정은 esnext
+    "target": "es5",
+    "lib": ["es6", "dom"]
+    ...
+  }
+}
+```
+
+### styled-components 유틸리티
+
+* style-lint
+
+styled-components 를 위한 linter ([링크](https://github.com/styled-components/stylelint-processor-styled-components))
+
+* styled-system
+
+styled-components 를 위한 디자인 시스템 ([링크](https://github.com/jxnblk/styled-system))
+
+* vscode-styled-components
+
+styled-components syntax highlighting 지원
+
+* 디자인 시스템
+
+[Carbon Design System](http://carbondesignsystem.com/)
+
+[Pricelinelabs Design System](https://github.com/pricelinelabs/design-system)
+
+### Typescript / React snippets
+
+1.SFC (Stateless Functional Component)
+
+먼저 파일의 확장자가 .tsx 인지 확인해보자 아닐 경우 에러가 남
+
+```tsx
+import * as React from 'react'
+import { Button } from './shared'
+
+interface Props {
+  // string literal type 지원
+  name: 'hello' | 'world'
+  class?: number
+}
+
+const HomeButton: React.SFC<Props> = ({ name }) => <Button>{name}</Button>
+
+export default HomeButton
+```
+
+2.Component(class)
+
+```tsx
+import * as React from 'react'
+import { connect } from 'react-redux'
+
+import * as actions from 'store/test/testActions'
+
+interface ClassProps {
+  test: typeof actions.test // 이런 식으로 변수로부터 type 지정 가능
+  thunk: typeof actions.thunk
+}
+
+// <Props, State> 순임
+class Class extends React.Component<ClassProps, any> {
+  render() {
+    return <div onClick={() => this.props.thunk(22)}>a</div>
+  }
+}
+
+export default connect(state => state, actions)(Class)
+```
+
+3.Redux ActionTypes
+
+```ts
+// enum 타입 => object 처럼 사용할 수 있다.
+export enum ActionType {
+  REQUEST = 'actionType/REQUEST',
+}
+
+export const EXAMPLE = 'EXAMPLE'
+export type EXAMPLE = typeof EXAMPLE
+
+// RootAction type
+export type RootAction = ActionType | EXAMPLE
+```
+
+4.RootReducer
+
+```ts
+import { combineReducers } from 'redux'
+
+import test, { Test } from 'store/test/testReducer'
+
+// 전체 상태를 export
+export interface ApplicationState {
+  test: Test
+}
+
+export default combineReducers<ApplicationState>({
+  test,
+})
+```
+
+5.Example Reducer
+
+```ts
+import { createReducer } from 'store/utils'
+import { Record } from 'immutable'
+
+import * as types from '../actionTypes'
+
+const TestRecord = Record({
+  number: 0,
+  a: 12,
+})
+
+export class Test extends TestRecord {
+  number: number
+  a: number
+}
+
+// record를 사용하려면 initialize 해야함
+const initialState = new TestRecord()
+
+export default createReducer(initialState, {
+  // types.Action => 전체 액션 type
+  [types.EXAMPLE](state: Test, action: types.Action) {
+    return <Test>state
+  },
+})
+```
+
+6.Example Action
+
+```ts
+import * as types from 'store/actionTypes'
+import { Dispatch, Action } from 'redux'
+
+import { ApplicationState } from 'store/reducers'
+
+export const test = (id: string) => ({
+  type: types.ActionType.REQUEST,
+  payload: id,
+})
+
+/* tslint:disable:no-console */
+export const thunk = (t: number) => {
+  return async (
+    // 전체 state를 generic의 인수로 받음
+    dispatch: Dispatch<ApplicationState>,
+    getState: () => ApplicationState,
+  ): Promise<Action | undefined> => {
+    // promise를 반환
+    const x = getState()
+    console.log(x.test.a)
+    try {
+      await setTimeout(() => console.log(t), 100)
+      return dispatch({ type: types.EXAMPLE })
+    } catch (error) {
+      console.log(error)
+      return
+    }
+  }
+}
+```
+
+### xx.defaults is not a function
+
+이 같은 경우는 import 방식 때문에 발생하는데
+
+해결 방법은 import 대신 require 를 사용하는 것이다.
+
+혹은 es 6 의 전체 모듈 가져오기 syntax 를 사용하면 된다.
+
+```js
+import * as modules from 'module'
+
+// or
+
+const modules = require('module')
+```
+
+## 2018. 03. 27 화
+
+### cannot find name describe
+
+타입스크립트의 경우 export 된 type 이 없을 경우 이런 에러를 뱉는다.
+
+```bash
+yarn add --dev @types/jest # 테스팅 프레임워크
+```
+
+### Node.js frameworks(프레임워크)
+
+주목할만한 프로젝트:
+fastify: [링크](https://github.com/fastify/fastify)
+nest: [링크](https://github.com/nestjs/nest)
+
+fastify 의 장점: 요청을 처리하는 속도가 다른 framework 에 비해서 빠르다.
+
+nest 의 장점:
+1.typescript 와 함께 나온 node framework
+2.angular 스타일의 코드
+3.dependency-injection 가 잘 적용되어 사용하기 "굉장히" 편함 4.테스팅도 지원이 잘 돼있음
+5.express.js의 abstraction layer이기 때문에 기존의 라이브러리와의 공존도 가능함
+
+## 2018. 03. 29 목
+
+### flexbox와 margin 속성
+
+부모 element에 flexbox가 적용돼있다면 margin: auto가 설정된 자식 element가 수평 뿐만 아니라 수직 정렬도 된다.
+(일반적으로는 수평 정렬만 됨)
+
+### css3 feature query
+
+css3에는 browser에서 적용되는 속성인지 아닌지 확인할 수 있는 방법이 있다.
+
+```css
+/* grid가 지원되지 않는 브라우저를 위한 fallback style */
+@supports not (display: grid) {
+  background-color: red;
+}
+```
+
+다만 feature query가 지원되는 브라우저의 경우 대부분 최신 기능을 지원하므로, not 보다는 아래와 같이 하는게 좋다.
+
+```css
+/*
+ * fallback style
+ * ie6, firefox 39 등 오래된 브라우저
+ */
+background-color: red;
+
+/* 최신 브라우저에 적용되는 style */
+@supports (display: grid) {
+  background-color: red;
+}
+```
+
+### css3 writing mode
+
+css에는 다국어 지원을 위해 writing mode가 있다. writing mode를 이용해 세로 쓰기나 뒤집은 세로 쓰기 등을 사용할 수 있다.
+
+### css3 grid-auto-flow
+
+grid-auto-flow를 사용하면 알아서 element가 위치를 찾아간다.
+
+## 2018. 03. 31 토
+
+### typescript-create-react-app에서 image(png/jpg 파일) 등 불러오기
+
+typescript는 적절한 typing이 없을 경우 경고 메시지를 뿜는다. 그러므로 프로젝트 아래에 typings 폴더를 만들고(이름은 상관 없다) 그 아래에 다음과 같은 파일을 만들어준다.
+
+```ts
+// assets.d.ts
+declare module '*.gif'
+declare module '*.jpg'
+declare module '*.jpeg'
+declare module '*.png'
+declare module '*.svg'
+```
+
+불러올 때는
+
+```ts
+import * as jpg from 'path/to/img.jpg'
+```
+
+[참조](https://github.com/wmonk/create-react-app-typescript/blob/master/packages/react-scripts/template/README.md#adding-images-fonts-and-files)

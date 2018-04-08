@@ -1,4 +1,4 @@
-# Webpack4/Babel/Docker 로 node 개발 환경 설정하기
+# 직접 설정해보는 Webpack4 / Babel7
 
 ![웹팩](./images/node-webpack/webpack.png)
 
