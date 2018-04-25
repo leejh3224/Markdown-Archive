@@ -499,7 +499,7 @@ docker-compose 는 한 번 빌드된 이미지를 caching 하기 때문에 다�
 
 중요 waypoint
 
-1. ec2 instance 에 nginx/node/mongodb 설정하기
+1.  ec2 instance 에 nginx/node/mongodb 설정하기
 
 먼저 sudo apt-get update && sudo apt-get upgrade -y 명령어를 통해 ubuntu 를 최신버전으로 업그레이드.
 
@@ -721,7 +721,7 @@ import Adapter from 'enzyme-adapter-react-16'
 configure({ adapter: new Adapter(), disableLifecycleMethods: true })
 ```
 
-만약 typescript를 사용 중이라면 여기에다가 package.json의 jest 옵션에
+만약 typescript 를 사용 중이라면 여기에다가 package.json 의 jest 옵션에
 
 ```json
 "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.ts"
@@ -1170,9 +1170,9 @@ or maybe the charset conversion library we use does not deal with noncharacters 
 
 ## 2018. 03. 19. 월
 
-### logstash에 저장한 파일이 logging되지 않아요 ㅜ
+### logstash 에 저장한 파일이 logging 되지 않아요 ㅜ
 
-logstash는 event를 통해 읽어들인다. 이 말은 파일이 변경되거나 혹은 처음 logstash에 저장되는 것이 아닌 이상 새로 읽어들이지 않는다는 것이다. 그러므로 파일이름을 바꾸거나 아니면 파일을 새로 수정해야 다시 읽어들인다. 또한 logstash는 한 번 실행되고 종료되지 않는다. 지속적으로 실행된 상태를 유지한다.
+logstash 는 event 를 통해 읽어들인다. 이 말은 파일이 변경되거나 혹은 처음 logstash 에 저장되는 것이 아닌 이상 새로 읽어들이지 않는다는 것이다. 그러므로 파일이름을 바꾸거나 아니면 파일을 새로 수정해야 다시 읽어들인다. 또한 logstash 는 한 번 실행되고 종료되지 않는다. 지속적으로 실행된 상태를 유지한다.
 
 ### Logstash csv 파일 다루기
 
@@ -1213,16 +1213,16 @@ filter {
     separator => "," # 기본 seperator
     columns => ["id", "name", "branch", "old_address", "new_address", "latitude", "longitude"]
   }
-  mutate { 
+  mutate {
     # elasticsearch에서 location은 geo_point타입이다.
     # 그리고 아래와 같이 먼저 latitude, longitude 칼럼을 float 타입으로 바꿔주고
     # 그 다음에 아래와 같이 location 아래에 위치시킨다.
     convert => { "latitude" => "float" }
     convert => { "longitude" => "float" }
     rename => [
-      "latitude", 
-      "[location][lat]", 
-      "longitude", 
+      "latitude",
+      "[location][lat]",
+      "longitude",
       "[location][lon]"
     ]
   }
@@ -1243,15 +1243,15 @@ output {
 
 ### Node.js 버전 충돌 문제 해결
 
-Node.js를 사용하다보면 자연스럽게 여러 버전의 node.js를 다운로드 받게 됩니다.
+Node.js 를 사용하다보면 자연스럽게 여러 버전의 node.js 를 다운로드 받게 됩니다.
 
-때로는 공식 홈페이지에서 다운로드 받을 수도 있고, 맥 유저라면 homebrew를 통해 다운로드 받을 수도 있죠.
+때로는 공식 홈페이지에서 다운로드 받을 수도 있고, 맥 유저라면 homebrew 를 통해 다운로드 받을 수도 있죠.
 
 이런 상황이 지속되다보면 node --version 명령어를 쳤을 때 이전 버전이 출력되는 일이 일어나기도 합니다.
 
-이는 여러군데서 node.js를 다운로드 받았기 때문에 발생하는 문제인데, 다음과 같이 해결할 수 있습니다.
+이는 여러군데서 node.js 를 다운로드 받았기 때문에 발생하는 문제인데, 다음과 같이 해결할 수 있습니다.
 
-1. Node.js 공식 홈페이지에서 다운로드 받은 경우(http://nodejs.org)
+1.  Node.js 공식 홈페이지에서 다운로드 받은 경우(http://nodejs.org)
 
 이 경우 명령어 한 방으로 정리 가능
 
@@ -1261,18 +1261,18 @@ rm -fr /usr/local/bin/{node,npm} /usr/local/lib/node_modules/
 
 [참조](https://github.com/nodejs/node-v0.x-archive/issues/4058)
 
-2. Homebrew를 통해 다운로드 받은 경우
+2.  Homebrew 를 통해 다운로드 받은 경우
 
-먼저 ```brew list```를 통해 node.js를 다운로드 받았는지부터 확인하자
+먼저 `brew list`를 통해 node.js 를 다운로드 받았는지부터 확인하자
 
-만약 node.js가 확인된다면 ```brew uninstall node --force```을 통해 지워주세요.
+만약 node.js 가 확인된다면 `brew uninstall node --force`을 통해 지워주세요.
 
---force를 붙여야만 여러 버전의 node.js를 지울 수 있습니다.
+--force 를 붙여야만 여러 버전의 node.js 를 지울 수 있습니다.
 
-Node.js는 보통 여러 경로를 통해서 다운로드 받을 수 있기 때문에 이처럼 버전 충돌 문제가 꽤 자주 발생합니다. 그러므로 한 경로를 통해서만 Node.js를 다운로드 받는 것이 좋습니다.
+Node.js 는 보통 여러 경로를 통해서 다운로드 받을 수 있기 때문에 이처럼 버전 충돌 문제가 꽤 자주 발생합니다. 그러므로 한 경로를 통해서만 Node.js 를 다운로드 받는 것이 좋습니다.
 
-그리고 많은 경우 가장 추천드리는 방법은 nvm을 이용하는 것입니다.
-nvm은 Node Version Manager의 약자로 node.js의 버전 관리를 도와주는 bash script입니다.
+그리고 많은 경우 가장 추천드리는 방법은 nvm 을 이용하는 것입니다.
+nvm 은 Node Version Manager 의 약자로 node.js 의 버전 관리를 도와주는 bash script 입니다.
 
 [링크](https://github.com/creationix/nvm)
 
@@ -1327,7 +1327,7 @@ source ~/.nvm/nvm.sh
 
 ### 생활코딩 리눅스 강의 중 왜 CLI 인가'?'
 
-linux에서는 각 프로세스의 출력을 다른 프로세스의 입력으로 전환할 수 있다.
+linux 에서는 각 프로세스의 출력을 다른 프로세스의 입력으로 전환할 수 있다.
 
 예를 들면 파일의 내용을 보여주는 cat 명령어와 특정 단어가 포함된 열을 보여주는 grep 명령어를 조합하면
 
@@ -1347,7 +1347,7 @@ cat [directory] | grep [keyword] | other_commands
 cat sometext.txt > copy.txt
 ```
 
-이러한 IO Redirection은 stdinput/stdoutput/stderror를 대상으로 한다.
+이러한 IO Redirection 은 stdinput/stdoutput/stderror 를 대상으로 한다.
 
 즉, 어떤 프로세스의 에러 출력도 리다이렉션이 가능한 것이다.
 
@@ -1367,7 +1367,7 @@ rm notexists.txt 1> result.txt 2> error.log
 
 +추가
 
-만약 >> 로 리다이렉션을 하면 기본적인 행동방식이 overwrite에서 append로 바뀐다. 즉 기존 아웃풋을 덮어쓰지 않고 추가만 한다.
+만약 >> 로 리다이렉션을 하면 기본적인 행동방식이 overwrite 에서 append 로 바뀐다. 즉 기존 아웃풋을 덮어쓰지 않고 추가만 한다.
 
 ```bash
 nano hello.txt # hello
@@ -1381,7 +1381,7 @@ cat hello.txt >> manyhellos.txt # hello
 cat hello.txt >> manyhellos.txt # hello hello
 ```
 
-번외) /dev/null => unix 계열 os의 휴지통 개념
+번외) /dev/null => unix 계열 os 의 휴지통 개념
 
 ## 2018. 03. 22 목
 
@@ -1391,17 +1391,17 @@ cat hello.txt >> manyhellos.txt # hello hello
 
 ex) /home/user1
 
-이 때 유저명의 디렉토리로 한 방에 이동하려면 위의 경로를 치는 것 대신 ```cd ~```을 치면 한 방에 이동할 수 있다.
+이 때 유저명의 디렉토리로 한 방에 이동하려면 위의 경로를 치는 것 대신 `cd ~`을 치면 한 방에 이동할 수 있다.
 
 ## 2018. 03. 23 금
 
 ### http/2, spdy
 
-http/1.1보다 속도 면에서 많은 성과를 이뤄냄.
+http/1.1 보다 속도 면에서 많은 성과를 이뤄냄.
 
 주요한 특징으로는 multiplexed stream, stream prioritization, server push, header compression 등이 있으며, 성능면에서 많은 개선이 이뤄짐.
 
-또 http/2는 https 기반에서만 작동하므로 암호화의 이점까지 가져감.
+또 http/2 는 https 기반에서만 작동하므로 암호화의 이점까지 가져감.
 
 spdy: http/2 이전에 구글이 개발한 개선 프로토콜
 
@@ -1437,7 +1437,7 @@ server.listen(port)
 
 ### Node.js 보안 모듈들
 
-1. csurf
+1.  csurf
 
 [csrf 이해하기](https://github.com/pillarjs/understanding-csrf/pull/10/files?short_path=2c41220)
 
@@ -1449,35 +1449,35 @@ CSRF 혹은 XSRF 공격을 방어하기 위한 수단으로 csrf 토큰을 사�
 3. 토큰이 올바르지 않으면 서버에서 요청을 거부합니다.
 ```
 
-이 때 공격자가 토큰을 얻으려할 것이며, CORS를 허용하지 않음으로써 토큰 획득을 원천적으로 차단할 수 있습니다. 또 쿠키를 httpOnly로 설정하면 XSS(자바스크립트 조작)을 막을 수 있습니다.
+이 때 공격자가 토큰을 얻으려할 것이며, CORS 를 허용하지 않음으로써 토큰 획득을 원천적으로 차단할 수 있습니다. 또 쿠키를 httpOnly 로 설정하면 XSS(자바스크립트 조작)을 막을 수 있습니다.
 
-2. rate limiting
+2.  rate limiting
 
-DDOS(Distributed Denial Of Service): 분산 서비스 거부 공격은 보통 서버 컴퓨터에 막대한 연산을 초래하는 api 요청을 지속적으로 보내거나 혹은 단순히 많은 요청을 보내 서버의 응답 지연이나 응답 시간 초과를 유도하여 서비스를 마비시킨다. 이를 막으려면 어떤 ip에서 어느 정도의 요청을 보내는지를 기억해야하며, 이 경우 redis 등의 저장소를 통해 요청 횟수를 기록하고, 이 숫자를 상회할 경우 에러를 띄울 수 있다.
+DDOS(Distributed Denial Of Service): 분산 서비스 거부 공격은 보통 서버 컴퓨터에 막대한 연산을 초래하는 api 요청을 지속적으로 보내거나 혹은 단순히 많은 요청을 보내 서버의 응답 지연이나 응답 시간 초과를 유도하여 서비스를 마비시킨다. 이를 막으려면 어떤 ip 에서 어느 정도의 요청을 보내는지를 기억해야하며, 이 경우 redis 등의 저장소를 통해 요청 횟수를 기록하고, 이 숫자를 상회할 경우 에러를 띄울 수 있다.
 
-3. safe-regex
+3.  safe-regex
 
-regex 중에는 막대한 연산을 필요로 하는 경우가 있다. 이 경우 DDOS 공격의 표적이 되기 쉬우며, 그렇기 때문에 안전한 regex만을 사용해야 한다. 이 때 "Safe regex"와 같은 모듈을 사용할 수 있다.
+regex 중에는 막대한 연산을 필요로 하는 경우가 있다. 이 경우 DDOS 공격의 표적이 되기 쉬우며, 그렇기 때문에 안전한 regex 만을 사용해야 한다. 이 때 "Safe regex"와 같은 모듈을 사용할 수 있다.
 
 [safe-regex](https://github.com/substack/safe-regex)
 
-4. helmet
+4.  helmet
 
-helmet은 express앱을 위한 보안장치이다. 기본적인 보안조치들이 갖춰져 있으며, 사용법도 간단해서 사용하기 좋다. 필수!
+helmet 은 express 앱을 위한 보안장치이다. 기본적인 보안조치들이 갖춰져 있으며, 사용법도 간단해서 사용하기 좋다. 필수!
 
-5. user parameter validation
+5.  user parameter validation
 
-유저가 입력한 값은 언제나 믿을 수 없는 값이다. 특히나 인풋 텍스트 같은 경우 SQL 인젝션이나 위험한 자바스크립트 공격이 언제든 시도될 수 있으므로 입력값을 검증하고 필요하다면 escape 시켜야한다. 또 가능한한 JSON 형태로 정보를 주고 받는 것이 좋다. 이 때 사용할 수 있는 것이 express-validator이다. 입력 검증 미들웨어 중에서는 가장 star가 많다.
+유저가 입력한 값은 언제나 믿을 수 없는 값이다. 특히나 인풋 텍스트 같은 경우 SQL 인젝션이나 위험한 자바스크립트 공격이 언제든 시도될 수 있으므로 입력값을 검증하고 필요하다면 escape 시켜야한다. 또 가능한한 JSON 형태로 정보를 주고 받는 것이 좋다. 이 때 사용할 수 있는 것이 express-validator 이다. 입력 검증 미들웨어 중에서는 가장 star 가 많다.
 
 [express-validator](https://github.com/ctavan/express-validator)
 
-6. XSS
+6.  XSS
 
-XSS 방어는 주로 entity를 escape하는 것으로 이뤄진다. 또 다른 방법은 httpOnly cookie를 사용하는 것으로 이를 통해 공격자가 자바스크립트로 cookie를 제어할 수 없게 한다.
+XSS 방어는 주로 entity 를 escape 하는 것으로 이뤄진다. 또 다른 방법은 httpOnly cookie 를 사용하는 것으로 이를 통해 공격자가 자바스크립트로 cookie 를 제어할 수 없게 한다.
 
 ### cookie/session 기반 인증
 
-http는 기본적으로 두 가지 특성이 있다. 첫 번째는 상태가 없다는 것이고(stateless), 두 번째는 연결이 일회성이라는 것이다.
+http 는 기본적으로 두 가지 특성이 있다. 첫 번째는 상태가 없다는 것이고(stateless), 두 번째는 연결이 일회성이라는 것이다.
 
 이 두 가지 특성 때문에 상태를 저장할 공간이 필요했는데, 일반적으로 현재는 쿠키와 세션이 사용되고 있다.
 
@@ -1487,9 +1487,9 @@ vs. JWT
 
 jwt 방식은 쿠키/세션과 달리 서버쪽에 세션을 생성하지 않는다. 대신 유저의 로그인 정보 등을 토큰 안에 담아 직접 전달한다. 그러므로 쿠키/세션 방식에 비해 서버에 부담이 적다. 그러나 세션을 관리할 수 없으므로 토큰을 임의로 폐기할 방법이 없다.
 
-### nginx 서버 기본적인 proxy, load-balancing과 caching
+### nginx 서버 기본적인 proxy, load-balancing 과 caching
 
-1. Proxy
+1.  Proxy
 
 proxy 설정은 proxy_pass 옵션을 통해 설정한다.
 
@@ -1509,9 +1509,9 @@ server {
 유저 -> localhost:80 혹은 localhost로 접속 -> nginx 프록시 서버 -> WAS(node.js 애플리케이션 서버)
 ```
 
-2. Load-balancing
+2.  Load-balancing
 
-여러 서버 인스턴스 간에 부하를 조절할 수 있다. 
+여러 서버 인스턴스 간에 부하를 조절할 수 있다.
 
 가장 기본적인 방식은 round-robin(순차적으로 부하를 부담), least-conn(가장 부하가 적은 서버에 부하를 넘김), weight(부하의 정도를 설정)이 있다.
 
@@ -1531,7 +1531,7 @@ server {
 }
 ```
 
-3. Caching
+3.  Caching
 
 웹앱의 성능에 가장 큰 영향을 미치는 요소는 캐싱이다.
 
@@ -1562,19 +1562,17 @@ server {
 
 서버사이드 렌더링은 크게 두 가지 이점이 있다.
 
-1. SEO 향상
-서버측에서 html을 렌더링해서 넘겨주므로 크롤링 봇들이 내용을 바로 확인할 수 있다.
+1.  SEO 향상서버측에서 html 을 렌더링해서 넘겨주므로 크롤링 봇들이 내용을 바로 확인할 수 있다.
 
-2. 초기 로딩속도 개선
-클라이언트측에서 렌더링하는 대신 서버에서 넘겨주므로 초기 로딩속도가 빨라진다.
+2.  초기 로딩속도 개선클라이언트측에서 렌더링하는 대신 서버에서 넘겨주므로 초기 로딩속도가 빨라진다.
 
-3. 단점:
-서버의 부하가 증가한다.
-구조가 복잡해진다.
+3.  단점:
+    서버의 부하가 증가한다.
+    구조가 복잡해진다.
 
 구현
 
-React 16의 renderToNodeStream을 사용
+React 16 의 renderToNodeStream 을 사용
 
 ```js
 import express from 'express'
@@ -1631,14 +1629,13 @@ server.get('/', (req, res) => {
 })
 
 server.listen(port)
-
 ```
 
 ## 2018. 03. 24. 토
 
 ### html5 모바일 전용 기능들
 
-1. Media Capture
+1.  Media Capture
 
 사진 촬영, 비디오 촬영, 녹음 기능이 존재.
 
@@ -2002,18 +1999,18 @@ nest 의 장점:
 1.typescript 와 함께 나온 node framework
 2.angular 스타일의 코드
 3.dependency-injection 가 잘 적용되어 사용하기 "굉장히" 편함 4.테스팅도 지원이 잘 돼있음
-5.express.js의 abstraction layer이기 때문에 기존의 라이브러리와의 공존도 가능함
+5.express.js 의 abstraction layer 이기 때문에 기존의 라이브러리와의 공존도 가능함
 
 ## 2018. 03. 29 목
 
-### flexbox와 margin 속성
+### flexbox 와 margin 속성
 
-부모 element에 flexbox가 적용돼있다면 margin: auto가 설정된 자식 element가 수평 뿐만 아니라 수직 정렬도 된다.
+부모 element 에 flexbox 가 적용돼있다면 margin: auto 가 설정된 자식 element 가 수평 뿐만 아니라 수직 정렬도 된다.
 (일반적으로는 수평 정렬만 됨)
 
 ### css3 feature query
 
-css3에는 browser에서 적용되는 속성인지 아닌지 확인할 수 있는 방법이 있다.
+css3 에는 browser 에서 적용되는 속성인지 아닌지 확인할 수 있는 방법이 있다.
 
 ```css
 /* grid가 지원되지 않는 브라우저를 위한 fallback style */
@@ -2022,7 +2019,7 @@ css3에는 browser에서 적용되는 속성인지 아닌지 확인할 수 있�
 }
 ```
 
-다만 feature query가 지원되는 브라우저의 경우 대부분 최신 기능을 지원하므로, not 보다는 아래와 같이 하는게 좋다.
+다만 feature query 가 지원되는 브라우저의 경우 대부분 최신 기능을 지원하므로, not 보다는 아래와 같이 하는게 좋다.
 
 ```css
 /*
@@ -2039,17 +2036,17 @@ background-color: red;
 
 ### css3 writing mode
 
-css에는 다국어 지원을 위해 writing mode가 있다. writing mode를 이용해 세로 쓰기나 뒤집은 세로 쓰기 등을 사용할 수 있다.
+css 에는 다국어 지원을 위해 writing mode 가 있다. writing mode 를 이용해 세로 쓰기나 뒤집은 세로 쓰기 등을 사용할 수 있다.
 
 ### css3 grid-auto-flow
 
-grid-auto-flow를 사용하면 알아서 element가 위치를 찾아간다.
+grid-auto-flow 를 사용하면 알아서 element 가 위치를 찾아간다.
 
 ## 2018. 03. 31 토
 
-### typescript-create-react-app에서 image(png/jpg 파일) 등 불러오기
+### typescript-create-react-app 에서 image(png/jpg 파일) 등 불러오기
 
-typescript는 적절한 typing이 없을 경우 경고 메시지를 뿜는다. 그러므로 프로젝트 아래에 typings 폴더를 만들고(이름은 상관 없다) 그 아래에 다음과 같은 파일을 만들어준다.
+typescript 는 적절한 typing 이 없을 경우 경고 메시지를 뿜는다. 그러므로 프로젝트 아래에 typings 폴더를 만들고(이름은 상관 없다) 그 아래에 다음과 같은 파일을 만들어준다.
 
 ```ts
 // assets.d.ts
@@ -2067,3 +2064,467 @@ import * as jpg from 'path/to/img.jpg'
 ```
 
 [참조](https://github.com/wmonk/create-react-app-typescript/blob/master/packages/react-scripts/template/README.md#adding-images-fonts-and-files)
+
+## 2018. 04. 09 월
+
+### c 와 js 의 overflow/underflow
+
+c 에는 number 가 int/unsigned int/float 등 수많은 타입을 가지고 있으며 각 타입마다 비트가 정해져 있다. 만약 이 비트보다 크거나 작은 값이 대입이 되면 비트 내에서 랜덤한 값이 도출된다. 즉 int 의 최대 값은 65536 인데 실수로 10 을 더하게 되면 65546 이 되는 것이 아니라 범위 내의 랜덤한 값이 된다. 이것을 오버플로우라고 한다. 반대의 경우도 마찬가지다.
+
+js 의 경우 모든 숫자는 number 타입이며, Number.MAX_VALUE 에 10 을 더하든 100 을 더하든 오버플로우가 일어나도 값은 Number.MAX_VALUE 에 고정된다. 반대로 언더플로우는 Number.MIN_VALUE 에 고정된다.
+
+### Live streaming audio/video
+
+현재 크롬과 파이어폭스(웹/모바일)에서 지원되며 WebRTC(web realtime connection) API 를 통해 구현하고 있다.
+
+기본적으로 navigator.mediaDevices.getUserMedia() 함수를 통해 클라이언트의 오디오 혹은 비디오 접근 권한을 묻고, 그 데이터를 다운로드 하거나 socket.io 를 통해 서버로 전송할 수 있다.
+
+이런 데이터를 오디오/비디오로 스트리밍하는 경우 hls(http live streaming)/rtp(real time protocol) 등의 프로토콜을 사용할 수 있다.
+
+### Node.js의 스트림과 비트, 메모리, 인코딩의 개념
+
+비트: 0 혹은 1로 표현되는 숫자 데이터, 데이터의 가장 작은 단위
+메모리: 비트 데이터가 존재하는 주소
+인코딩: 컴퓨터가 이해할 수 있는 숫자와 인간 언어간의 약속(ASCII 테이블을 생각하면 이해가 쉽다.)
+스트림: 스트림은 스트링, 어레이 등과 같은 데이터 콜렉션이다. 스트림의 가장 큰 특징은 chunk 단위로 나눠진다는 것. 일반적인 방식은 모든 데이터를 ram(메모리)에 올려두고 이 작업이 끝난 뒤에야 읽기를 시작하기 때문에 메모리 사용량이 높지만 스트림은 chunk 단위로 데이터를 쪼개서 읽기 때문에 훨씬 더 적인 메모리를 사용한다.
+
+[참조]
+[Node.js Streams 당신이 알아야할 모든 것](https://github.com/FEDevelopers/tech.description/wiki/Node.js-Stream-%EB%8B%B9%EC%8B%A0%EC%9D%B4-%EC%95%8C%EC%95%84%EC%95%BC%ED%95%A0-%EB%AA%A8%EB%93%A0-%EA%B2%83)
+[A Guide to Faster Web App I/O and Data Operations with Streams](https://www.sitepen.com/blog/2017/10/02/a-guide-to-faster-web-app-io-and-data-operations-with-streams/)
+
+### CORS 다시 이해하기
+
+> 처음 전송되는 리소스의 도메인과 다른 도메인으로부터 리소스가 요청될 경우 해당 리소스는 cross-origin HTTP 요청에 의해 요청됩니다. 예를 들어, http://domain-a.com으로부터 전송되는 HTML 페이지가 \<img> src 속성을 통해 http://domain-b.com/image.jpg를 요청하는 경우가 있습니다. 오늘날 많은 웹 페이지들은 CSS 스타일시트, 이미지, 그리고 스크립트와 같은 리소스들을 각각의 출처로부터 읽어옵니다.
+
+> 보안 상의 이유로, 브라우저들은 스크립트 내에서 초기화되는 cross-origin HTTP 요청을 제한합니다. 예를 들면, XMLHttpRequest는 same-origin 정책을 따르기에, XMLHttpRequest을 사용하는 웹 애플리케이션은 자신과 동일한 도메인으로 HTTP 요청을 보내는 것만 가능했습니다. 웹 애플리케이션을 개선시키기 위해, 개발자들은 브라우저 벤더사들에게 XMLHttpRequest가 cross-domain 요청을 할 수 있도록 요청했습니다
+
+> W3C Web Applications Working Group은 새로운 Cross-Origin Resource Sharing (CORS) 메커니즘을 권하고 있습니다. CORS는 웹 서버에게 보안 cross-domain 데이터 전송을 활성화하는 cross-domain 접근 제어권을 부여합니다. 모던 브라우저들은 cross-origin HTTP 요청의 위험성을 완화시키기 위해 (XMLHttpRequest와 같은) API 컨테이너 내에서 CORS를 사용합니다.
+
+from MDN cors 문서
+
+즉, cors는 서로 다른 도메인 간에 리소스를 공유하기 위한 메커니즘이 된다.
+
+이를 해결하는 방법에는 두 가지가 있는데 첫 번째는 서버에서 응답에 "Access-Contorl-Allow-Origin": "*" header를 돌려주는 것으로, 심플하지만 모든 도메인에 대해 요청을 허용하게 되며 서버 리소스를 프론트엔드에서 관리할 수 없는 경우 사용할 수 없다. 또 기본적으로 이는 제한되어 있는 자원에 일부러 예외를 허용하는 것이기 대문에 권장되지 않는다.
+
+두 번째 방법은 프록시를 이용하는 것이다. 프록시를 이용하면 같은 도메인에서 요청하는 것처럼 요청을 보낼 수 있으므로 일부러 오리진 허용을 하지 않더라도 자원을 이용할 수 있다.
+
+## 2018. 04. 12. 목
+
+### 장고(django) 튜토리얼 따라하기
+
+장고에 대한 느낌은 루비랑 언어 스타일이 비슷하고 문법의 간결성이 높다는 점에서 높은 점수를 주고 싶다. 물론 처음 배워보는 프레임워크라 그런지 좀 낯설긴 했지만 django_allauth로 소셜 로그인도 해보고 mysqlclient를 사용해서 적당히 crud 작업도 해봤다. 어드민이 같이 탑재돼있어서 상당히 편하다는 인상이 있다.
+
+다만 django 자체가 rest api 설계를 염두에 두기 보다는 웹앱을 구현하는 데 중점을 맞추었기 때문에 django_rest_framework를 추가로 설치해야 json response를 받아볼 수 있다.
+
+파이썬을 배워야하기 때문에 배우는 것보다는 그냥 느낌만 한 번 봤다고 생각하고 싶다.
+
+## 2018. 04. 14 토
+
+### mysql, sequelize 도커 활용하기
+
+기본적으로 큰 요령은 없었지만 중간에 Host '172.0.0.2' is unable to connect ~ 이런 에러가 지속적으로 발생했다. 문제의 원인은 파악할 수 없지만 컨테이너를 한 번 지우고 다시 돌렸더니 잘 된다;;
+
+```yaml
+version: "3.5"
+services:
+  test:
+    container_name: test
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=leejh3224
+      - DB_PASS=10rhrnak
+      - MYSQL_DB=dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mysql
+    networks:
+      - backend
+    tty:
+      true
+
+  mysql:
+    container_name: mysql
+    restart: always
+    image: mysql/mysql-server:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=10rhrnak
+      - MYSQL_DATABASE=dev
+      - MYSQL_USER=leejh3224
+      - MYSQL_PASSWORD=10rhrnak
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+
+volumes:
+  db-data:
+
+networks:
+  backend:
+    driver: bridge
+```
+
+## 2018. 04. 14 (토)
+
+### thoughts react testing
+
+> Given a set of props and state, assert on the output of the component
+Given an event (like a user interaction), assert on the output of the component
+
+컴포넌트 테스팅의 두 가지 목적은 위와 같다.
+
+1.의 경우에는 스냅샷 테스팅 혹은 하나하나 일일히 값을 assert함으로써 달성할 수 있다.
+2.의 경우에는 simulate를 이용할 수 있다.
+
+중요한 것은 테스트가 너무 커지지 않게 하는 것이다. 테스트 또한 컴포넌트와 마찬가지로 관리해야하는 코드 베이스기 때문에 너무 장황한 테스트는 그 자체로 sustainability가 부족하다. 그러므로 너무 잘게 테스트를 쪼개기 보다는 user interaction 단위로 쪼개거나 혹은 snapshot testing을 이용하자.
+
+snapshot testing은 언제나 가독성이 생명이다. serializer을 사용해서 한 눈에 변화를 파악할 수 있게 하자.
+
+테스트를 나눌 때는 context에 따라 나눠라. 실행 context가 다르다면 다른 describe 블락으로 나눠라.
+
+## 2018. 04. 15. 일
+
+### S3에 호스팅
+
+1단계 버킷 생성
+2단계 버킷 생성 이후 개요 옆의 속성 탭을 누르면 "정적웹사이트 호스팅"이란 메뉴가 있음. 거기서 인덱스 문서와 오류 문서를 모두 index.html로 함.
+3단계 권한 탭으로 넘어가서
+버킷 정책에 아래처럼 퍼블렉 읽기 권한을 부여
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::leejh3224-react/*"
+        }
+    ]
+}
+```
+
+4단계 마지막으로 업로드!
+업로드할 때는 build 폴더를 통째로 올리지 말고 build 폴더 아래에 있는 파일과 폴더만 올린다!
+
+끝! (url은 아까 정적웹사이트 호스팅 설정할 때 엔드포인트라고 적혀있는 링크가 있다.)
+
+### css trick(skew with smooth line)
+
+transform 속성을 이용해서 사선 효과를 줄 수 있다.
+
+skewY(x deg)를 이용하면 요소를 Y방향으로 기울일 수 있는데 이때, translateY()를 같이 이용해서 위쪽으로 살짝 이동시키면 사다리꼴 모양을 얻을 수 있다.
+
+또 skewY한 부분이 굴곡져보이는 현상이 발견되는데(크롬: 65버전), 이때는 outline: 1px solid transparent를 이용하면 안티 앨리어싱 효과를 볼 수 있다.
+
+[참조]( https://stackoverflow.com/questions/6492027/css-transform-jagged-edges-in-chrome/36549674#36549674)
+
+## 2018. 04. 19. (목)
+
+### js의 v8엔진과 event loop, call stack, callback queue
+
+기본적으로 자바스크립트는 싱글 쓰레드 런타임이다.
+
+이 말은 작업은 순서대로 진행된다는 말이다. (한 번에 하나의 일만을 처리할 수 있음)
+
+자바스크립트에서 어떤 함수를 실행하면 그 함수는 스택에 쌓이게 된다. 그리고 만약 어떤 함수가 다른 함수를 실행하는 함수라면 그 다른 함수를 자신 위에 스택으로 쌓는다.
+
+ex)
+
+function x() {
+  console.log('y')
+}
+
+function y() {
+  x()
+}
+
+y()
+
+1. 가장 먼저 y()를 스택에 쌓는다.
+2. y()는 x()를 호출하므로 y()위에 x()를 스택으로 쌓는다.
+3. x()는 console.log()를 자신 위에 스택으로 쌓는다.
+4. 더 이상 쌓을 스택이 없으므로 console.log('y')를 수행한다.
+5. x() 스택이 꺼내진다.
+6. y() 스택도 꺼내지면서 스택이 비워진다.
+
+블로킹의 개념
+
+블로킹이란 일반적으로 실행속도가 굉장히 느린 작업을 의미한다. console.log()는 실행시간이 1ms 미만이지만 거대한 while 루프 같은 작업은 몇 십초의 긴 시간을 필요로 한다.
+
+동기적인 작업이 문제가 되는 이유는 블로킹한 작업을 동기적으로 실행할 경우 스택에서 큰 작업을 다 처리할 때까지 다른 일은 아무것도 하지 못하기 때문이다. 
+(브라우저의 렌더링 작업 역시 스택에 쌓이지 못하므로 요소를 클릭하거나하는 일은 할 수 없다.)
+
+이제 비동기 콜백을 사용하게 된다.
+
+그렇다면 자바스크립트에서 동시성은 어떻게 이뤄지는 것일까?
+
+자바스크립트는 싱글 쓰레드의 런타임이지만 비동기 콜백을 사용해 마치 여러가지 일을 동시에 처리하는 것과 같은 효과를 낸다.
+
+이러한 작업은 다음과 같이 이뤄진다.
+
+console.log('start')
+
+$.get('/someurl', (result) => {
+  console.log(result)
+})
+
+$.on('click', () => {
+  console.log('button clicked')
+})
+
+이제 어떤 식으로 함수가 실행되는지 살펴보자.
+
+1. 동기적인 함수인 console.log()가 실행된다. 즉시 스택에 쌓이며 실행되면서 스택에서 사라진다.
+
+2. 스택에 $.get('/') 작업이 올려지고 바로 webApi에 의해 xhr 요청이 처리되면서 스택에서 제거된다. xhr 요청이 완료되면 콜백함수는 콜백 큐로 이전된다. 콜백큐로 이전된 콜백함수는 이벤트 루프에 의해 "스택이 비어있다면" 스택으로 옮겨져 실행된다.
+
+3. 마지막으로 onClick 핸들러는 유저가 클릭을 할 때마다 $.on('click') 함수를 스택에 쌓고 webApi에게 처리를 넘기면서 스택에서 제거한다. webApi는 콜백 큐에 콜백함수들을 밀어넣는다. 이벤트 루프는 스택을 관찰하다가 스택이 비면 콜백함수를 가져와서 실행하고 스택을 비운다.
+
+결과적으로 setTimeout과 같은 함수의 실행시간은 정확하게 알 수가 없게 된다. 즉, 일정한 딜레이 이후에 콜백 큐로 옮겨지기는 하지만 스택이 비어있지 않다면 스택이 빌 때까지 기다렸다가 실행되기 때문에 딜레이는 최소 딜레이 개념으로 보는 것이 더 바람직하다.
+
+비동기 콜백이 중요한 이유는 브라우저의 렌더링 작업 역시 큐의 하나이기 때문이다. 물론 렌더링 큐는 콜백 큐보다 우선하며, 스택이 비어있을 때 가장 먼저 렌더링 작업부터 한다.
+
+이 때 스크롤 콜백과 같이 1프레임마다 실행되는 이벤트를 등록해버리면 콜백 큐에 과도하게 많은 작업이 몰리고 브라우저의 렌더링이 지연되는 결과를 초래하게 된다. 물론 동기적인 경우보다는 낫겠지만 여전히 렌더링 지연문제를 불러오므로 디바운싱과 같은 테크닉을 사용하여 콜백 큐에 들어가는 콜백의 숫자를 조절하는 것이 바람직하다.
+
+[관련 비디오](https://www.youtube.com/watch?v=8aGhZQkoFbQ)
+
+제목: Philip Roberts: What the heck is the event loop anyway? | JSConf EU 2014
+조회수 537,810회
+
+## 2018. 04. 20 (금)
+
+### docker exec -it <id> /bin/bash가 안 될 때
+
+기본적으로 alpine이미지에는 bash가 내장돼있지 않다. sh를 대신해서 시도해보자. 잘 될 것이다.
+
+![이유](images/cannot_bash.png)
+
+## 2018. 04. 21. (토)
+
+### docker-swarm workflow
+
+1. Docker-compose 파일 작성
+
+```yml
+version: "3"
+services:
+  web:
+    # image는 도커 허브 저장소의 이미지여야함
+    # 로컬 이미지는 도커 머신에서 인식할 수 없음
+    image: username/repo:tag
+    deploy:
+      replicas: 5 # 레플리카 개수
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "80:80"
+    networks:
+      - webnet
+networks:
+  webnet:
+```
+
+2. Swarm 시작
+
+*** 도커 머신을 사용하는 것은 로컬환경에서 테스트하기 위한 것임 ***
+*** 실제 환경에서는 스웜을 사용 ***
+
+도커 머신이 존재한다면 매니져 머신에 접속해서 ```docker-machine ssh myvm1 "docker swarm init --advertise-addr <myvm1 ip>"``` 명령어를 쳐서 시작! 이때 포트는 무조건 2377
+
+다음으로 워커노드를 합류시킨다.
+
+```bash
+# 아래의 ip는 매니져 노드의 ip임
+
+docker-machine ssh myvm2 "docker swarm join \
+--token <token> \
+<ip>:2377"
+```
+
+3. 매니져 노드에 접속
+
+eval $(docker-machine env myvm1) 명령어를 친 다음 ```docker-machine ls```를 치면 노드들의 상태를 볼 수 있는데 ACTIVE에 * 표시가 있다면 현재 접속 중인 것이다.
+
+다시 돌아가려면 eval $(docker-machine env -u), -u 태그는 unset이며 이때는 머신의 이름 없이 입력
+
+4. 서비스 디플로이
+
+서비스 업데이트를 하려면 먼저 머신에 접속해야함. 
+
+접속하는 법: 도커 머신 아이콘에서 Swarms - 오른쪽에 초록색 아이콘 클릭하면 터미널이 나옴
+
+이제 도커에 디플로이돼있는 서비스 업데이트: docker stack -c docker-compose.yml app(서비스 이름)
+
+이미지 업데이트: docker build . -t leejh3224/app(허브 저장소 명) 한 다음에 docker push leejh3224/app(저장소)
+
+5. 끝
+
+만약 이때 worker instance에 있는 public dns 주소에 들어갔는데 접속이 안 된다면  보안그룹에서 중간에 Node가 들어가는 그룹의 인바운드 규칙을 바꿔주자. 필요한 포트는 다 열어줘야함.
+
+*** 중요: 스웜은 무조건 매니져 노드 1개, 워커 노드 1개 이상으로 구성해야함 ***
+
+*** 그리고 public dns 접속은 무조건 워커 노드로 들어가야함 ***
+
+6. 워크플로
+
+코드 작성 - 이미지 빌드/푸시(허브) - 머신 접속  - 다시 서비스 디플로이 - Tada!(변경을 확인하려면 인터넷 기록 삭제 후 try)
+
+## 2018. 04. 22. (일)
+
+### hype driven development
+
+최신 기술을 사용하는 일은 분명 흥분되는 일이다.
+
+그러나 그 기술을 사용할 때는 기술을 사용하는 이유가 분명해야 한다.
+
+만약 새로운 기술을 사용할 때 생산성이 더 감소한다면 또 문제를 적절하게 해결해주지 못한다면 오히려 옛날의 솔루션을 쓰는게 더 나을 수도 있다.
+
+후보군들
+
+1. microservice
+
+마이크로서비스를 사용하면 확장성 면에서 분명한 이점을 얻을 수 있다. 그러나 그 정도 부하를 가지는 시스템이 되기 전까지 마이크로서비스 아키텍쳐는 오히려 설계적으로 부담만 가중시킬 뿐이다.
+
+2. NoSQL
+
+마찬가지로 관계가 없는 대규모 json 데이터를 다룬다면 효과적이겠지만 기존의 Relational database로 처리하기에 적절한 데이터를 굳이 몽고디비와 같은 NoSQL 디비로 처리할 필요는 없다.
+
+그러므로 새기술을 사용하고 싶다면 적당한 시간을 들여서 기술을 배우고 그 기술과 기존의 해법을 고려한 후에 분명한 생산성 향상과 문제 해결 가능 여부를 판단하고 사용하자.
+
+### React app with nginx
+
+React app을 호스팅하는 방법은 간단하다. build한 뒤에 index.html만 돌려주면 된다.
+
+각설하고 설정파일을 보자.
+
+```conf
+user  nginx;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+  include       /etc/nginx/mime.types;
+  default_type  application/octet-stream;
+
+  log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+
+  access_log  /var/log/nginx/access.log  main;
+
+  sendfile        on;
+  #tcp_nopush     on;
+
+  keepalive_timeout  65;
+
+  gzip  on; # gzip 설정
+  gzip_disable "msie6";
+  gzip_min_length 1100;
+  gzip_buffers 16 8k;
+  gzip_proxied any;
+  gzip_types text/css application/javascript; # 이미지의 경우 이미 gzip된 파일을 사용하므로 굳이 할 필요 x
+  gzip_comp_level 6;
+
+  include /etc/nginx/conf.d/*.conf;
+
+  server {
+    listen 80; # http 기본 포트
+    server_name 127.0.0.1; # 서버의 호스트명
+
+    location ~* \.(css|js)$ {
+      expires 30d; # 정적 자산 캐싱 설정
+    }
+
+    location / {
+      index index.html;
+      try_files $uri /index.html;
+    }
+  }
+}
+```
+
+저기서 조심할 것은 server_name과 캐싱 설정, 그리고 압축 설정이다.
+
+```Dockerfile
+FROM nginx:latest
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+도커파일은 별로 신경 쓸 부분은 없다.
+
+```yml
+version: "3.6"
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./build/:/usr/share/nginx/html/ # 빌드 폴더를 root폴더로 override
+      - ./nginx.conf:/etc/nginx/nginx.conf # 기본 설정을 override
+```
+
+/usr/share/nginx/html/ 이 폴더를 override해야만 제대로 index.html을 볼 수 있다. 조심하자.
+
+그리고 마찬가지로 기본 설정을 override하는 파일도 /etc/nginx/nginx.conf이다.
+
+## 2018. 04. 25 (수)
+
+### css로 코드 블럭 만들기
+
+Archive 내에 있는 css_codeblock.html 참조
+
+### css content 속성 및 before, after
+
+content 속성은 attr()을 이용할 수 있다. 즉, data-label 해놓고
+
+content: attr(data-label) 이런 식으로 부를 수 있다.
+
+그리고 before 나 after를 적절히 활용하면 tooltip같은 것을 훨씬 쉽게 만들 수 있다.
+
+### css 변수 사용
+
+:root {
+  --pink: pink;
+}
+
+.hi {
+  color: var(--pink);
+}
+
+### css 번호 매기기
+
+css의 속성 중에는 counter-reset이란 것이 있는데 이는 어떤 html element가 등장할 때마다 번호를 매기는 것으로, 시작은 컨테이너에서 counter-reset을 호출하면서 시작된다.
+
+.container {
+  counter-reset: line; // 여기서 line은 임의의 이름
+}
+
+.child::before {
+  content: counter(line);
+  counter-increment: line; // 카운터 숫자 증가
+}

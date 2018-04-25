@@ -4,7 +4,7 @@
 
 이 시리즈는 1 편(https://gompro.postype.com/post/1603351)과 이어지는 게시물입니다.
 
-0. aws lambda 를 위한 vpc 환경 세팅하기
+0.  aws lambda 를 위한 vpc 환경 세팅하기
 
 저번 시간에는 람다 코드를 zip 파일로 올리는 것까지 성공했다.
 
@@ -20,11 +20,11 @@ VPC 는 여러 조합으로 구성될 수 있는데 여기서는 가장 기본�
 
 먼저 VPC 콘솔로 이동한 다음, [가상 프라이빗 클라우드] 메뉴 아래의 VPCs 를 선택하고, 기본 VPC 외에 추가로 VPC 를 생성해줍시다.
 
-1. VPC 생성
+* VPC 생성
 
 첫 번째 단계는 VPC 생성입니다. VPC 의 CIDR block 에는 적절한 block 값(ex 11.0.0.0/16)을 입력해주세요.
 
-2. 서브넷 생성
+2.  서브넷 생성
 
 다음으로 그 아래에 있는 서브넷 메뉴에서 2 개의 서브넷을 생성해줍니다.
 
@@ -34,13 +34,13 @@ VPC 는 여러 조합으로 구성될 수 있는데 여기서는 가장 기본�
 
 두 개의 서브넷이 모두 준비가 되었나요?
 
-3. internet gateway 생성
+3.  internet gateway 생성
 
 이제 인터넷 연결을 가능하게할 internet gateway 생성하겠습니다.
 
 생성을 마쳤다면 해당 게이트웨이를 선택한 뒤 VPC 에 연결 메뉴를 클릭해주세요.
 
-4. 라우팅 테이블 생성
+4.  라우팅 테이블 생성
 
 다음으로 라우팅 테이블을 설정해봅시다.
 
@@ -60,7 +60,7 @@ VPC 는 여러 조합으로 구성될 수 있는데 여기서는 가장 기본�
 
 두 개의 서브넷 중 ~ public 이라고 이름 붙힌 서브넷을 연결해주세요!
 
-5. NAT gateway 생성
+5.  NAT gateway 생성
 
 화룡점정입니다. NAT gateway 생성을 누르고 서브넷에는 퍼블릭 서브넷 id 를, 엘라스틱 IP id 는 기존 엘라스틱 IP 가 없을 경우 새 EIP 생성을 눌러 하나 만들어줍니다.
 
@@ -78,9 +78,7 @@ VPC 는 여러 조합으로 구성될 수 있는데 여기서는 가장 기본�
 
 서울 리전(ap-northeast-2)에서 서비스를 사용할 경우 시간당 약 0.059 달러의 비용이 발생하는데 만약 한달을 사용하게 되면 예상 요금은
 
-```
-  30 * 24 * 0.059 = 42.48 달러 = 45 336.1793 원(2018.02.20 기준)
-```
+`30 * 24 * 0.059 = 42.48 달러 = 45 336.1793 원(2018.02.20 기준)`
 
 네 ... 요금 만만치 않습니다.
 
@@ -90,7 +88,7 @@ VPC 는 여러 조합으로 구성될 수 있는데 여기서는 가장 기본�
 
 주의해주세요!
 
-6. 정리
+6.  정리
 
 이제 기본적인 구조가 갖춰졌습니다.
 
@@ -100,11 +98,11 @@ VPC 는 여러 조합으로 구성될 수 있는데 여기서는 가장 기본�
 
 그림이 상당히 복잡해보이지만 중요한 부분은 두 가지 입니다.
 
-1. Internet gateway(인터넷 게이트웨이)와 연결된 퍼블릭 서브넷을 통해 외부 인터넷 서비스를 이용할 수 있다는 점.
+1.  Internet gateway(인터넷 게이트웨이)와 연결된 퍼블릭 서브넷을 통해 외부 인터넷 서비스를 이용할 수 있다는 점.
 
-2. NAT gateway(Network Address Translation)는 직접 외부 인터넷 서비스에 접속할 수 없는 프라이빗 서브넷의 요청을 라우팅한다는 점.
+2.  NAT gateway(Network Address Translation)는 직접 외부 인터넷 서비스에 접속할 수 없는 프라이빗 서브넷의 요청을 라우팅한다는 점.
 
-3. NAT gateway 의 요청은 고정된 IP 주소(Elastic IP)를 통해 요청된다는 점.
+3.  NAT gateway 의 요청은 고정된 IP 주소(Elastic IP)를 통해 요청된다는 점.
 
 이 두 가지 개념의 차이는 마치 공유기와 LAN 선의 개념과도 같습니다.
 
@@ -124,8 +122,8 @@ VPC - 서브넷 - 보안그룹을 차례로 넣어줍니다.
 
 이는 AWS 의 공식문서에도 잘 나와있는데
 
-Important
-If your Lambda function needs Internet access, do not attach it to a public subnet or to a private subnet without Internet access. Instead, attach it only to private subnets with Internet access through a NAT instance or an Amazon VPC NAT gateway.
+> Important
+> If your Lambda function needs Internet access, do not attach it to a public subnet or to a private subnet without Internet access. Instead, attach it only to private subnets with Internet access through a NAT instance or an Amazon VPC NAT gateway.
 
 네. 프라이빗 서브넷 + NAT gateway 혹은 NAT instance 가 연결되어 있는 경우에만 인터넷 요청을 할 수 있습니다.
 
@@ -147,13 +145,11 @@ If your Lambda function needs Internet access, do not attach it to a public subn
 
 마지막으로 탄력적 IP 의 IP 주소를 알리고 서비스의 발송 IP 목록에 추가해주세요!
 
-사진
-
 테스트를 누르시면 지금쯤 위와 같은 화면이 뜰 것입니다.
 
 수고하셨습니다!
 
-1. cold start?
+1.  cold start?
 
 여기까지 끝났을 때 정말 끝났다고 생각하셨나요?
 
@@ -210,21 +206,47 @@ cron(0/10 _ ? _ MON-FRI \*) - 10 분 간격으로 월 ~ 금까지 호출
 이제 다른 람다를 호출하는 람다코드를 작성해봅시다.
 
 ```js
+const AWS = require('aws-sdk')
+AWS.config.region = 'ap-northeast-2' // 정확한 리전을 입력해주요.
+const lambda = new AWS.Lambda()
+
+exports.handler = (event, context, callback) => {
+  const aligoTest = {
+    key: process.env.API_KEY,
+    userid: process.env.USER_ID,
+    sender: process.env.SENDER,
+    receiver: 'MESSAGE_RECEIVER',
+    msg: 'test',
+    testmode_yn: 'Y',
+  }
+  const params = {
+    FunctionName: 'YOUR_LAMBDA_NAME',
+    InvocationType: 'RequestResponse',
+    LogType: 'Tail',
+    Payload: JSON.stringify(aligoTest),
+  }
+
+  lambda.invoke(params, (err, data) => {
+    if (err) {
+      callback(err)
+    } else {
+      callback(null, data)
+    }
+  })
+}
 ```
 
-환경변수 설정하는 방법을 모르시겠다구요? 1편(https://gompro.postype.com/post/1603351)을 참조해주세요.
+환경변수 설정하는 방법을 모르시겠다구요? 1 편(https://gompro.postype.com/post/1603351)을 참조해주세요.
 
-다른 람다를 호출하는 간단한 방법은 aws-sdk를 사용하는 것입니다. 방법은 위와 같고 다만 FunctionName이나 region을 정확하게 입력하는 것만 주의해주시면 됩니다.
+다른 람다를 호출하는 간단한 방법은 aws-sdk 를 사용하는 것입니다. 방법은 위와 같고 다만 FunctionName 이나 region 을 정확하게 입력하는 것만 주의해주시면 됩니다.
 
 그리고 마지막으로 람다함수 실행이 가능한 역할("AWSLambdaRole")을 IAM-역할-정책에서 추가해주세요.
 
-
-
-TADA! 
+TADA!
 
 이제 전송결과를 확인하면 주기적으로 설정해놓은 간격으로 문자가 발송(정확히는 테스트 문자)되는 것을 확인할 수 있습니다.
 
-2. NAT instance ?
+2.  NAT instance ?
 
 저희는 편의상 NAT gateway 를 사용했습니다.
 
@@ -360,14 +382,14 @@ yes 를 입력하고 진행하면 로그인이 된 것입니다. 주의하실 �
 
 만약 위 튜토리얼을 전부 잘 따라갔음에도 람다 에러가 발생한다면 이 항목을 잘 읽어봐주세요.
 
-1. Timeout 에러
+1.  Timeout 에러
 
 * 혹시 VPC 설정에서 서브넷 항목에 퍼블릭 서브넷을 포함하지는 않았나요?
   서브넷 항목에는 NAT gateway / NAT instance 가 연결된 프라이빗 서브넷 만을 포함해줘야합니다.
 
 * 혹시 VPC 설정에서 선택된 보안그룹이 NAT instance 에 명시된 보안그룹과 다르지는 않은가요? NAT instance 에 적용 중인 보안그룹과 VPC 에 설정된 보안그룹은 같아야합니다.
 
-2. ssh 접속 관련
+2.  ssh 접속 관련
 
 * ~ are too open
 
@@ -380,21 +402,19 @@ chmod 400 "path/to/xxxxx.pem"을 입력해보세요.
 
 인바운드 유형에 ssh 그리고 소스에는 0.0.0.0/0 (모든 트래픽)을 넣어주면 접속이 될 것입니다.
 
-3. 청구서를 받아보고 깜짝 놀랐습니다. 어떡하죠?
+3.  청구서를 받아보고 깜짝 놀랐습니다. 어떡하죠?
 
 * NAT gateway 는 사용량 + 사용시간에 따라 돈을 받습니다.
 
-4. 인증오류 -IP 가 발생합니다.
+4.  인증오류 -IP 가 발생합니다.
 
 * 알리고 서비스는 제한된 IP 주소에서만 보낼 수 있습니다.
 
-그러므로 NAT gateway에 연결된 탄력적 IP의 주소를 알리고 서비스의 발송 IP 주소란에 추가해주세요.
+그러므로 NAT gateway 에 연결된 탄력적 IP 의 주소를 알리고 서비스의 발송 IP 주소란에 추가해주세요.
 
-5. 한글 메시지가 보내지지 않아요.
+5.  한글 메시지가 보내지지 않아요.
 
 * 알리고 서비스에서 한글 문자를 보낼 때는 encodeURI 함수를 통해 메시지를 인코딩한 다음 보내주세요.
-
-
 
 그런데 사용시간에 따른 요금이 만만치 않습니다. 위에서도 밝혔듯이 한 달에 약 42 달러(서울 기준)정도 들어가므로 비용 문제가 부담되신다면 그냥 NAT instance 를 사용해주세요.
 
