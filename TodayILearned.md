@@ -277,6 +277,12 @@ SendGrid 서비스를 사용하던 중 발생했는데
 
 jest 는 package.json 에서 테스트 환경이 node 라고 명시되어야 제대로 작동한다.
 
+요약:
+
+It can be a Jest configuration issue. I solved forcing "node" as jest environment in package.json:
+
+"jest": { "testEnvironment": "node" }
+
 [참고](https://stackoverflow.com/questions/42677387/jest-returns-network-error-when-doing-an-authenticated-request-with-axios/44366115#44366115)
 
 ## 2018.02.22
@@ -2219,6 +2225,10 @@ snapshot testing은 언제나 가독성이 생명이다. serializer을 사용해
 
 끝! (url은 아까 정적웹사이트 호스팅 설정할 때 엔드포인트라고 적혀있는 링크가 있다.)
 
+추가) 2018. 04. 28 토: cloudfront setting하기 -> 클라우드 프론트를 통해 서브하는 경우 s3 버킷 명이 아닌 정적 페이지의 url을 클라우드 프론트 origin으로 입력해줘야 403에러를 막을 수 있다.
+
+![cloudfront origin domain](images/cloudfront-hosting.png)
+
 ### css trick(skew with smooth line)
 
 transform 속성을 이용해서 사선 효과를 줄 수 있다.
@@ -2498,6 +2508,12 @@ services:
 
 Archive 내에 있는 css_codeblock.html 참조
 
+### css background-clip
+
+배경을 잘라서 보여주는 속성 -> 배경을 꾸밀 때 유용하게 사용할 수 있을 듯
+
+[참고](https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip)
+
 ### css content 속성 및 before, after
 
 content 속성은 attr()을 이용할 수 있다. 즉, data-label 해놓고
@@ -2528,3 +2544,26 @@ css의 속성 중에는 counter-reset이란 것이 있는데 이는 어떤 html 
   content: counter(line);
   counter-increment: line; // 카운터 숫자 증가
 }
+
+## 2018. 04. 27. (금)
+
+### S3 Access Denided 문제 해결하기
+
+s3 api의 경우 local에서 사용할 때는 region 정보만 입력해줘도 작동한다. 그러나 리눅스 환경에서는 accessKey와 secretAccessKey 정보 없이는 access denied 에러가 발생한다.
+
+```js
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.S3_BUCKET_REGION,
+})
+
+const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
+
+```
+
+그러므로 위와 같이 정확하게 credentials를 모두 입력해주자.
+
+만약 credential을 설정했으나 까먹었다면 ```open ~/.aws/credentials``` 명령어를 통해 확인하자. 이미 credentials을 설정했다면 두 개의 키를 확인할 수 있을 것이다.
+
+[참조](http://www.awskr.org/fb-post/s3-access-denied-%EC%98%A4%EB%A5%98%EB%A5%BC-%EA%B2%AA%EC%96%B4-%EB%B3%B4%EC%8B%A0%EB%B6%84-%EA%B3%84%EC%8B%9C%EB%82%98%EC%9A%94-%EA%B7%B8-%EB%8F%99%EC%95%88-%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC/)
