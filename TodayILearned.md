@@ -2567,3 +2567,281 @@ const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
 만약 credential을 설정했으나 까먹었다면 ```open ~/.aws/credentials``` 명령어를 통해 확인하자. 이미 credentials을 설정했다면 두 개의 키를 확인할 수 있을 것이다.
 
 [참조](http://www.awskr.org/fb-post/s3-access-denied-%EC%98%A4%EB%A5%98%EB%A5%BC-%EA%B2%AA%EC%96%B4-%EB%B3%B4%EC%8B%A0%EB%B6%84-%EA%B3%84%EC%8B%9C%EB%82%98%EC%9A%94-%EA%B7%B8-%EB%8F%99%EC%95%88-%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC/)
+
+## 2018. 04. 30 (월)
+
+## Node.js 경로 이해하기
+
+1. __dirname: 해당 파일이 위치한 디렉토리를 리턴
+
+ex) /src/file.js => /src
+
+2. process.cwd(): 노드 파일이 실행된 디렉토리를 리턴(current working directory)
+
+ex) node src/server.js => /
+node server.js => /src
+
+3. path.join(p1, p2, p3 ...)
+
+인자로 받은 path를 단순히 합침, 그러므로 path.join('/a', '/b') => /a/b
+
+4. path.resolve(p1, p2, p3)
+
+마치 터미널에서 cd를 하는 것처럼 사용, 가장 앞선 path를 root 디렉토리로 해서 경로 형성
+
+path.resolve('/server', '../client') => /client (/server 경로를 root로 삼은 것임!!)
+
+[참고](https://stackoverflow.com/questions/9874382/whats-the-difference-between-process-cwd-vs-dirname)
+
+[참고](https://stackoverflow.com/questions/35048686/difference-between-path-resolve-and-path-join-invocation)
+
+## mysql 서버 시작
+
+mysql.server start/stop
+
+## 2018. 05. 01. 화
+
+### Promise.all의 행동
+
+1. Promise.all은 절대로 sequential하지 않다. 그냥 promise들을 parellel하게 처리한다.
+
+2. 만약 순서가 중요하다면 then을 사용하는 것이 맞다.
+
+3. then으로 체인되는 함수들은 iterable.reduce를 사용할 수 있다.
+
+4. syncronous와 asyncronous를 섞지 마라. 실행 순서가 헷갈린다.
+
+### css grid auto-fit (responsive design)
+
+css grid에서 가장 간단하게 column간의 responsiveness를 확보하는 방법은 auto-fit을 사용하는 것이다.
+
+```css
+grid-template-columns: repeat(auto-fix, minmax(400px, 1fr));
+overflow-wrap: break-word; // 글자가 튀어나오면 break함
+```
+
+이런 식으로 하면 가장 작은 너비가 400이 되며 이는 @media(max-width: 400px)을 한 것과 똑같이 작동한다.
+
+## 2018. 05. 03. 목
+
+### Hacker rank: Amazing strings
+
+Amazing strings: 연속적으로 붙어있는 캐릭터가 없으면 amazing string.
+
+ab, abc는 amazing. abaa는 아님.
+
+여기서 amazing이 아닌 string들을 amazing하게 만드는 최소의 operation 횟수는?
+
+단 모든 글자는 영어 소문자임.
+
+해답)
+
+하나씩 해보면 어떤 규칙을 발견할 수 있다.
+
+글자수 i에 따라 분류하면
+
+i = 2: aa => 한 번만 바꿔주면 되므로 최소 operation 횟수는 1회.
+
+i = 3: aaab => 연속된 세 글자 사이의 한 글자만 교체하면 됨. 최소 횟수는 역시 1회.
+
+i = 4: abccccd => 이는 i = 2을 두 번 수행하면 된다고 볼 수 있음. 다이내믹 프로그래밍(적은 횟수의 결과로 부터 많은 횟수의 결과를 도출해내는 방법, 피보나치 수열이 대표적임)
+
+i = 5: absssssg => i = 2와 i = 3를 수행하는 결과와 동일함. 그러므로 2회.
+
+i = 6: abiiiiiib => i = 2를 세 번 수행하는 결과와 동일함. 그러므로 3회.
+
+i = 7: xsqqqqqqq => i = 2 + 2 + 3 => 그러므로 3회.
+
+여기서 i = 2인 경우와 i = 3인 경우의 횟수를 잘 조합하면 i가 몇이더라도 구할 수 있음을 알 수 있다.
+
+즉 Math.floor(i / 2)로 구할 수 있음.
+
+이제 이렇게 연속되는 string만 ransom string에서 추출하는 방법을 고민해봅시다.
+
+string을 다루는 가장 효과적인 방법은 regex입니다.
+
+그리고 연속되는 string을 찾기 위한 regex는 /([a-z])\1+/g 임.
+
+\1은 앞선 그룹 혹은 앞선 글자를 의미함. 그리고 영어 소문자만 나온다고 했으므로 영어 소문자를 캡쳐하고 이어서 같은 글자가 등장하는 경우가 한 번 이상 (+) 등장하면 캡쳐함. 이제 매치된 string들의 글자에 따라 최소 operation의 횟수를 쉽게 구할 수 있다.
+
+```js
+function getMinOp(str) {
+  const matches = str.match(/([a-z])\1+/g)
+
+  if (!matches) {
+    return 0 // 연속되는 글자 없음. 그러므로 0
+  } else {
+    // match 된 string에 대해 min operation 횟수를 구하고 이를 더함.
+    return matches.map(m => Math.floor(m.length/2)).reduce((acc, n) => acc + n)
+  }
+}
+```
+
+## 2018. 05. 20
+
+### javascript: assign by value vs. assign by reference
+
+자바스크립트의 특이한 행동(unexpected behavior)들 중 가장 두드러지는 것은 할당과 관련이 많다.
+
+특히나 자바스크립트 혹은 파이썬 같은 고수준 언어로 처음 프로그래밍을 배우게 되면 reference가 뭔지, copy assignment가 뭔지 모르게 되는 경우가 많다.
+
+그래서 아래와 같은 행동을 이해하기가 어렵다.
+
+```js
+const array = [1,2,3,4]
+let y = array // y에 array를 할당
+
+y.push(0)
+
+console.log(x) // [1,2,3,4,0]
+console.log(y) // [1,2,3,4,0]
+```
+
+!!! 왜 두 변수의 값이 같은 것일까? 상식적으로는 y에만 0을 추가했다고 생각하기 쉽지만 자바스크립트가 배열과 객체 할당을 어떤 식으로 수행하는 지 알게 되면 놀라운 일이 아니다.
+
+자바스크립트는 기본적으로 배열과 객체를 제외한 값에는 copy assignment 즉 값을 복사한 다음 할당을 하고,
+배열과 객체에 대해서는 assign by reference, 즉 reference를 통해 할당을 한다.
+
+이는 두 변수가 같은 메모리 주소를 참조하게끔 만드는 것, 즉 포인터를 복사하는 개념이다.
+두 변수는 같은 메모리 주소를 가르키는 포인터이므로 당연히 다른 한 변수에 대한 조작 결과를 공유하게 된다.
+
+이와 같은 일을 방지하려면 assign by value를 해야하는데 자바스크립트 배열의 slice 함수는 이를 잘 수행한다.
+
+```js
+const array = [1,2,3,4]
+let y = array.slice() // y에 array의 복사본을 할당
+
+y.push(0)
+
+console.log(x) // [1,2,3,4]
+console.log(y) // [1,2,3,4,0]
+```
+
+slice() 함수를 이용하면 대상의 값을 복사한다음에 할당하므로 마치 string이나 number를 할당할 때처럼 copy assignment를 진행한다.
+
+항상 유의할 것은 slice() 함수는 unexpected behavior를 막아주지만 왜 자바스크립트가 배열과 객체에 대해 assign by reference를 기본값으로 수행하게 되었는지를 생각해보면 좋다.
+
+이는 배열이나 객체를 복사해서 값을 할당하는 일이 상당히 비싼 작업이기 때문이다. 위의 예시는 실은 상당히 간단한 배열이기 때문에 성능 상의 저하가 별로 없을지 모르지만 만약 새로운 변수를 지정할 때마다 빈번하게 복사를 해서 값을 넘겨주게 되면 메모리 이슈를 야기할 수 있다.
+
+### .js 파일에서 jsx syntax가 깨지는 문제
+
+vscode + prettier는 언어를 감지해서 그에 맞게 포맷을 해준다.
+
+문제는 js와 jsx 확장에 적용되는 규칙이 다르다는 것.
+
+그래서 만약 .js 파일에 jsx를 사용하게 되면 vscode는 js 구문으로 인식하므로 jsx 구문을 제대로 사용할 수 없다.
+
+![jsx syntax 깨짐](images/today-i-learned/jsx-syntax-broken.png)
+
+결과적으로 위의 사진과 같이 코드가 깨지게 된다.
+
+이 경우 가장 간단한 해결책은 .js 확장에 대한 언어 설정을 바꿔주는 것이다.
+
+vscode 하단의 "javscript" (언어 감지) 부분을 누르면 다른 언어를 설정해줄 수 있다.
+
+![vscode 언어 설정](images/today-i-learned/vscode-language-mode.png)
+
+이 설정을 javascript 대신 javascript react로 바꿔주면 코드가 깨지지 않는다!
+
+## 2018. 05. 23 수
+
+### pointer vs reference in c++
+
+Pointer와 reference는 어떤 변수에 대한 indirect한 접근을 지원한다는 점에서 유사성을 띈다. 그러나 pointer는 어떤 변수에 대한 메모리 주소값을 가지는데 반하여 reference는 alias에 더 가깝다. 또 구체적으로 살펴보면 여러 차이점이 있는데,
+
+1. null reference는 존재하지 않는다.
+pointer는 nullptr가 될 수도 있고, 변수를 선언할 때 값이 정해지지 않아도 괜찮다. 반면 reference는 무조건 상수처럼 다른 변수 값으로 선언이 되어야한다.
+
+2. reassignment
+포인터는 주소 값과 값(dereference)을 바꿀 수 있다. (물론 둘 다 const 키워드를 통해 막을 수 있다.) 그리고 포인터는 그 자체로 메모리 주소를 가지는 변수이기 때문에 이런 동작이 이해된다. 그러나 refernce는 가르키고 있는 변수와 메모리 주소를 공유하며, 스택은 차지한다. 또 메모리 주소를 공유하기 때문에 독자적으로 재할당되거나 할 수 없다.
+
+3. level of indirection
+pointer는 이론적으로 무한히 다른 변수를 가르킬 수 있다. 포인터의 포인터의 포인터의 포인터 ...
+그러나 reference는 한 단계보다 더 많이 가르킬 수는 없다.
+
+4. arithmetic operation
+pointer는 기본적으로 +, - 연산이 가능하다. 그러나 reference는 불가능하다. (물론 &ref + 1과 같은 형태는 가능하다.)
+
+when to use what
+
+reference는 function parameter와 return type에 적절하다.
+pointer는 nullptr나 arithmetic operation이 필요할 때 사용하면 좋다.
+
+[참고](https://www.geeksforgeeks.org/pointers-vs-references-cpp/)
+
+### js object mutation
+
+js의 object와 array는 기본적으로 mutable한 객체이다. 그렇기 때문에 언제든 value를 바꿀 수 있고 예상치 못한 행동을 야기할 수 있다. 그렇기 때문에 object 같은 경우에는 object.assign()이나 {...obj} 같은 문법을 통해서 새로운 object를 만들어줘야한다. 물론 mutation을 피할 수 없는 상황도 있다. 가령 dom node 의 attribute를 바꾼다거나 혹은 굉장히 큰 객체를 다루는 경우라면 mutation을 사용하는 것이 현명할 것이다.
+
+## 2018.05.27 일
+
+### Ipv4, cidr, vpc에 대하여
+
+내 예전 동료 중 한 명은 IPv4/CIDR에 대해 "그건 그냥 비트들(bits)이야"라고 얘기했다.
+
+이번 포스트에선 IPv4, CIDR 표기법에 대해 살펴보고 이를 바탕으로 Amazon VPC를 설정해보도록 하겠다.
+
+IPv4나 CIDR 표기법에 대한 어려운 설명은 쉽게 찾아볼 수 있다. 심지어 CIDR 블락 크기를 구하기 위한 표 사용을 추천하는 책들도 있다. 하지만 CIDR 표기법은 단순한 수학 계산에 가깝다. 그러므로 몇 번 계산해보면 자연스럽게 방법을 터득할 수 있다. 내 생각엔 IPv4의 역사를 이해하고 CIDR의 존재 이유와 왜 CIDR 표기법이 사용되는지를 이해하는 것이 더 중요하다고 본다.
+
+먼저 IPv4 주소의 구조를 하나하나 살펴보자. 일반적으로 IPv4 주소는 점(.)으로 구분되는 4개의 십진수로 표기되며 주소 전체의 길이는 32비트이다. 그리고 각각 8비트로 구성되는 그룹은 Octet(8개의 비트 그룹)이라고 부른다. 그러므로 아래 그림에서 보듯이 IPv4 주소는 4개의 Octet으로 구성된다.
+
+사실 대부분의 독자들도 알겠지만 몇 개의 비트가 주어졌을 때 가능한 표현의 가짓수를 구하는 건 별 것 아닌 일이다. 예를 들어서 8비트로 표현가능한 전체 가짓수는 2^8 = 256가지이다.
+
+그림에서 보여지듯이 1바이트는 8비트로 구성되므로 256가지의 값을 나타낼 수 있다.
+
+IPv4: Addressing an Evaporating Pool(역자 주: 사용 가능한 IPv4 주소가 끊임없이 사라지는 상황을 물이 지속적으로 증발하는 풀장에 빗대어 표현)
+
+각 IPv4 주소는 32비트로 구성되기 때문에 사용 가능한 총 주소의 갯수는 4,294,967,296 (2^32)개가 된다. 물론 이 숫자는 예약된 블락(reserved blocks)을 계산에 넣지 않았을 경우의 수치다. 예를 들어 전체 /8 블락(16,777,216개의 주소)은 host-local 사용을 위해서만 사용된다.
+
+미국 인구조사국(United States Census Bureau)에 의하면 지구의 인구는 70억 명에 달한다고 한다. 슬프게도 국제 전기통신 연합(International Telecommunication Union)은 그 중 40%만이 인터넷을 사용할 수 있다고 예상한다. 하지만 만약에 28억명(70억 * 0.4)보다 많은 사람이 인터넷을 사용할 수 있게 되면 어떻게 43억개의 IPv4 주소만으로 현재 시스템을 유지할 수 있을까? 이 문제는 A Flock of Seagulls(1980년대에 등장한 영국의 팝 밴드)처럼 1980년대부터 지속적으로 제기돼 왔다.
+
+애초부터 큰 주소 블락이 과도하게 분배되는 걸 막고자 도입된 IPv4의 classful networking이 존재했지만, 레이건 대통령의 임기가 마치기도 전에 전체 주소가 서서히 부족해져 갔다. 만약 class라는 용어를 들어봤다면 IP 주소의 앞 자리 비트를 통해 네트워크의 크기를 구별하는 현재의 이 개념(CIDR)이 역사적인 IPv4 주소 체계와 관련이 있다는 사실을 알 것이다. class "A"는 /8 CIDR 블락과 동일하며, B는 /16과 C는 /24 블락에 해당한다. classful networking은 완벽하진 않았지만 이전의 주소 체계(/8 블락만을 사용할 수 있었던)에서 크게 발전된 개념이었다.
+
+안타깝게도 90년대 들어 IP 주소 고갈 현상은 더욱 심화되었다. Ford Motor Company, Eli Lilly 그리고 Halliburton은 16,777,216 개의 주소에 해당하는 /8 블락 주소를 배정받았다. 동시에 10년 동안 미 국방부는 2억개가 넘는 IPv4 주소를 보유하고 있었다. 이들 모두가 배정받은 주소는 무려 전체 IPv4 주소의 6퍼센트에 해당된다!
+
+2000년도에 들어서면서 이런 이슈들(IPv4가 가지고 있었던 주소 고갈 문제)을 해결하기 위해 도입된 IPv6 주소가 존재함에도 불구하고 IPv4 주소 체계의 수명을 늘릴 기발한 방법들이 고안되었다. 대부분의 노력은 낭비되고 있던 IPv4 주소를 새로 배정하는 일에 투입되었다. 추가적으로 
+
+[원문]https://treyperry.com/2015/06/22/ipv4-cidr-vpc-in-a-nutshell/
+
+## 2018. 06. 14. (목)
+
+### aws cognito 사용법
+
+>> What is Cognito exactly?
+Cognito는 종합 유저 관리 시스템이라고 할 수 있다. 기존의 디비 + OAuth 혹은 Passport.js를 이용하는 인증 방식과는 달리 개발자가 직접 세팅해줘야 하는 부분이 거의 없다. 또 손쉽게 MFA를 추가할 수 있다는 점도 큰 장점이다. 다른 장점으로는 백엔드에서 회원인증/비밀번호 분실/회원정보 수정 등의 복잡한 회원 관리 코드를 작성할 필요성이 사라진다는 점이다. 이 부분은 트리거 함수, 즉 개별 케이스에 대해 람다를 추가함으로써 충분히 커스터마이징이 가능하며 웬만한 경우가 아니고서야 굳이 트리거 함수를 추가할 필요가 없다.
+
+>> React native와 사용하기
+React native와 cognito를 사용하기 위해서는 Aws mobile 설정이 필요하다. 이 경우 awsmobile 모듈을 다운받고 awsmobile configure 를 통해 credential을 설정해주면 된다. 미리 IAM 유저(admin 혹은 mobilehub access 권한을 가진)를 만들고 그 credential정보를 저장 해놓아야한다. Aws secret key 같은 경우 다시 확인할 수 없으므로 필수적으로 다른 곳에 백업해 둬야한다. Configure 작업이 끝나면 이제 본격적으로 react-native 프로젝트 폴더에서 awsmobile init을 하고 기본값으로 대답해준다음 awsmobile user-signup enable을 통해 유저 인증 기능을 활성화한다. 이제 aws-amplify의 편리한 api를 사용하면 끝!
+
+>> 주의점 (caveat)
+¬	미리 설정해놓은 유저풀 사용하기? 
+만약 MFA를 사용할 생각이 없거나 자신만의 userpool을 사용하고 싶다면 mobilehub에서 user signin 메뉴를 들어간다음 import user pool을 통해 자신이 미리 설정해놓은 유저 풀을 가져와야 한다. 또 identity pool에서 우리가 미리 설정해놓은 유저 풀을 사용하게끔 설정해야 하는데 이는 이 질문(https://stackoverflow.com/questions/48511066/how-to-link-my-mobile-hub-with-my-existing-cognito-user-pool)에 자세하게 그 방법이 나와있다. 
+¬	Unable to verify secret hash for client XXXXXX?
+이 문제는 Cognito가 유저 시크릿을 적절하게 처리하지 못하기 때문에 발생하는 에러이다(https://stackoverflow.com/questions/37438879/unable-to-verify-secret-hash-for-client-in-amazon-cognito-userpools). 이 에러에 대한 완벽한 해결책은 아직 존재하지 않는 것 같고 다만 앱 클라이언트를 생성할 때 “generate client secret” 옵션을 끄는 방법밖에는 없다. (https://github.com/aws/aws-amplify/issues/267) 만약 이미 앱 클라이언트를 생성한 뒤라면 aws cli를 이용해서 기존의 클라이언트를 지우고 새로 생성해야한다. 
+
+아래의 두 시나리오는 모두 aws cognito-idp 명령어 아래에 존재한다.
+Create user pool client (https://docs.aws.amazon.com/cli/latest/reference/cognito-idp/create-user-pool-client.html)
+
+Delete user pool client
+(https://docs.aws.amazon.com/cli/latest/reference/cognito-idp/delete-user-pool-client.html)
+
+### React native scaffolding
+
+기존의 create-react-native-app 대신 expo cli를 사용하면 더 간단하게 가능
+
+1. exp init [appName]
+
+2. 다만 주의점은 package.json 파일에 name, version 속성을 따로 명시해줘야 된다는 점. (모듈을 제대로 인스톨할 수 없음)
+
+만약 typescript를 쓴다면 react-native-typescript-transformer 모듈이 따로 필요하며, app.json의 하단에
+
+```json
+"packagerOpts": {
+  "sourceExts": [“ts”, “tsx”],
+  "transformer": “node_modules/react-native-typescript-transformer/index.js”
+}
+```
+
+라고 적어줘야함.
+
+3.Tsconfig 파일과 tslint 파일은 각각 ```Npx tsc``` 명령어와 ```npx tslint –i``` 명령어를 사용하면 됨. Tslint 같은 경우 tslint-config-prettier 설정을 tslint.json에 추가해주면 끝!
